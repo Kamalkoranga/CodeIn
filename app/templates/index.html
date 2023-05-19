@@ -1,7 +1,519 @@
 {% extends 'base.html' %}
 
-{% block title %}CodeIn: Log In or Sign Up{% endblock title %}
+{% block title %}Feed | LinkedIn{% endblock title %}
+
+{% block style %}
+<style>
+    .right-col {
+        font-size: 0.7em;
+    }
+
+    .right-col a {
+        text-decoration: none;
+    }
+
+    .right-col li {
+        list-style-type: none;
+    }
+
+    .profile {
+        border-radius: 50%;
+        width: 3em;
+    }
+
+    .new-post {
+        cursor: pointer;
+    }
+
+    .icons span {
+        font-weight: bold;
+        cursor: pointer;
+        padding: 1em;
+        border-radius: 5px;
+    }
+
+    .icons span:hover {
+        background-color: rgb(219, 217, 217);
+    }
+
+    .post-menu {
+        cursor: pointer;
+    }
+
+    .comments {
+        cursor: pointer;
+    }
+
+    .comments:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock style %}
 
 {% block content %}
-<h1>Hello, World!</h1>
+<div class="row">
+    <div class="col-xl-3 col-lg-3 col-md-4">
+        <div class="card">
+            <img src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
+                class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the
+                    card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <div class="card my-3">
+            <div class="card-header">
+                Featured
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">An item</li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-xl-6 col-lg-5 col-md-8 main">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex gap-3 align-items-center mb-3">
+                    <img class="profile col-2"
+                        src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
+                        alt="">
+                    <form class="col-10">
+                        <input type="text"
+                            class="form-control bg-light rounded-pill p-3 new-post"
+                            value="Start a post" disabled readonly
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                    </form>
+                </div>
+                <div class="d-flex justify-content-around">
+                    <p>
+                        <i class="fa-regular fa-image me-2"
+                            style="color: #70a5ff;"></i> Photo
+                    </p>
+                    <p>
+                        <i class="fa-brands fa-youtube me-2"
+                            style="color: #28cc49;"></i> Video
+                    </p>
+                    <p>
+                        <i class="fa-regular fa-calendar-minus me-2"
+                            style="color: #b07017;"></i> Audio Event
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-newspaper me-2"
+                            style="color: #ff4000;"></i> Write Article
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card post my-3 ">
+            <div class="card-body mb-0">
+                <div
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
+                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                alt="" class="profile">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column">
+                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">2h • <i
+                                class="fa-solid fa-earth-asia"></i></p>
+                    </div>
+                </div>
+                <p class="post-body mb-0">
+                    What is your favorite part of programming? 🚀 <br><br>
+
+                    Programmers enjoy coding and are always looking for new ways
+                    to solve problems. ⚡️ <br><br>
+
+                    Every day brings a new challenge, a new algorithm to write,
+                    or a bug to fix. They are constantly learning and
+                    experimenting. <br><br>
+
+                    Despite the intense concentration required, programmers are
+                    also highly creative people. They think outside the box to
+                    find creative solutions to complex problems. They are
+                    problem solvers who are always looking for the most
+                    efficient and elegant solution to any problem.🎉 <br><br>
+
+                    A programmer's life is full of challenges, creativity, and a
+                    sense of accomplishment. There are no limits to what you can
+                    achieve in coding if you have the dedication and drive.🫶🏻
+                    <br><br>
+
+                    Tell us about your favorite part as a programmer in the
+                    comment section down below! 👇🏻<br><br>
+                </p>
+            </div>
+            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
+                alt="">
+            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                <span>
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                </span>
+                <span class="text-secondary comments">5 comments</span>
+            </div>
+            <div class="icons d-flex justify-content-around p-1 border-top">
+                <span class="text-secondary">
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                </span>
+                <span class="text-secondary"><i
+                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                    Comment</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                    Repost</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                    Send</span>
+            </div>
+        </div>
+
+        <div class="card post my-3 ">
+            <div class="card-body mb-0">
+                <div
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
+                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                alt="" class="profile">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column">
+                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">2h • <i
+                                class="fa-solid fa-earth-asia"></i></p>
+                    </div>
+                </div>
+                <p class="post-body mb-0">
+                    What is your favorite part of programming? 🚀 <br><br>
+
+                    Programmers enjoy coding and are always looking for new ways
+                    to solve problems. ⚡️ <br><br>
+
+                    Every day brings a new challenge, a new algorithm to write,
+                    or a bug to fix. They are constantly learning and
+                    experimenting. <br><br>
+
+                    Despite the intense concentration required, programmers are
+                    also highly creative people. They think outside the box to
+                    find creative solutions to complex problems. They are
+                    problem solvers who are always looking for the most
+                    efficient and elegant solution to any problem.🎉 <br><br>
+
+                    A programmer's life is full of challenges, creativity, and a
+                    sense of accomplishment. There are no limits to what you can
+                    achieve in coding if you have the dedication and drive.🫶🏻
+                    <br><br>
+
+                    Tell us about your favorite part as a programmer in the
+                    comment section down below! 👇🏻<br><br>
+                </p>
+            </div>
+            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
+                alt="">
+            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                <span>
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                </span>
+                <span class="text-secondary comments">5 comments</span>
+            </div>
+            <div class="icons d-flex justify-content-around p-1 border-top">
+                <span class="text-secondary">
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                </span>
+                <span class="text-secondary"><i
+                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                    Comment</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                    Repost</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                    Send</span>
+            </div>
+        </div>
+
+        <div class="card post my-3 ">
+            <div class="card-body mb-0">
+                <div
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
+                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                alt="" class="profile">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column">
+                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">2h • <i
+                                class="fa-solid fa-earth-asia"></i></p>
+                    </div>
+                </div>
+                <p class="post-body mb-0">
+                    What is your favorite part of programming? 🚀 <br><br>
+
+                    Programmers enjoy coding and are always looking for new ways
+                    to solve problems. ⚡️ <br><br>
+
+                    Every day brings a new challenge, a new algorithm to write,
+                    or a bug to fix. They are constantly learning and
+                    experimenting. <br><br>
+
+                    Despite the intense concentration required, programmers are
+                    also highly creative people. They think outside the box to
+                    find creative solutions to complex problems. They are
+                    problem solvers who are always looking for the most
+                    efficient and elegant solution to any problem.🎉 <br><br>
+
+                    A programmer's life is full of challenges, creativity, and a
+                    sense of accomplishment. There are no limits to what you can
+                    achieve in coding if you have the dedication and drive.🫶🏻
+                    <br><br>
+
+                    Tell us about your favorite part as a programmer in the
+                    comment section down below! 👇🏻<br><br>
+                </p>
+            </div>
+            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
+                alt="">
+            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                <span>
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                </span>
+                <span class="text-secondary comments">5 comments</span>
+            </div>
+            <div class="icons d-flex justify-content-around p-1 border-top">
+                <span class="text-secondary">
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                </span>
+                <span class="text-secondary"><i
+                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                    Comment</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                    Repost</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                    Send</span>
+            </div>
+        </div>
+
+        <div class="card post my-3 ">
+            <div class="card-body mb-0">
+                <div
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
+                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                alt="" class="profile">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column">
+                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">2h • <i
+                                class="fa-solid fa-earth-asia"></i></p>
+                    </div>
+                </div>
+                <p class="post-body mb-0">
+                    What is your favorite part of programming? 🚀 <br><br>
+
+                    Programmers enjoy coding and are always looking for new ways
+                    to solve problems. ⚡️ <br><br>
+
+                    Every day brings a new challenge, a new algorithm to write,
+                    or a bug to fix. They are constantly learning and
+                    experimenting. <br><br>
+
+                    Despite the intense concentration required, programmers are
+                    also highly creative people. They think outside the box to
+                    find creative solutions to complex problems. They are
+                    problem solvers who are always looking for the most
+                    efficient and elegant solution to any problem.🎉 <br><br>
+
+                    A programmer's life is full of challenges, creativity, and a
+                    sense of accomplishment. There are no limits to what you can
+                    achieve in coding if you have the dedication and drive.🫶🏻
+                    <br><br>
+
+                    Tell us about your favorite part as a programmer in the
+                    comment section down below! 👇🏻<br><br>
+                </p>
+            </div>
+            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
+                alt="">
+            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                <span>
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                </span>
+                <span class="text-secondary comments">5 comments</span>
+            </div>
+            <div class="icons d-flex justify-content-around p-1 border-top">
+                <span class="text-secondary">
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                </span>
+                <span class="text-secondary"><i
+                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                    Comment</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                    Repost</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                    Send</span>
+            </div>
+        </div>
+
+        <div class="card post my-3 ">
+            <div class="card-body mb-0">
+                <div
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
+                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                alt="" class="profile">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column">
+                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">2h • <i
+                                class="fa-solid fa-earth-asia"></i></p>
+                    </div>
+                </div>
+                <p class="post-body mb-0">
+                    What is your favorite part of programming? 🚀 <br><br>
+
+                    Programmers enjoy coding and are always looking for new ways
+                    to solve problems. ⚡️ <br><br>
+
+                    Every day brings a new challenge, a new algorithm to write,
+                    or a bug to fix. They are constantly learning and
+                    experimenting. <br><br>
+
+                    Despite the intense concentration required, programmers are
+                    also highly creative people. They think outside the box to
+                    find creative solutions to complex problems. They are
+                    problem solvers who are always looking for the most
+                    efficient and elegant solution to any problem.🎉 <br><br>
+
+                    A programmer's life is full of challenges, creativity, and a
+                    sense of accomplishment. There are no limits to what you can
+                    achieve in coding if you have the dedication and drive.🫶🏻
+                    <br><br>
+
+                    Tell us about your favorite part as a programmer in the
+                    comment section down below! 👇🏻<br><br>
+                </p>
+            </div>
+            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
+                alt="">
+            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                <span>
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                </span>
+                <span class="text-secondary comments">5 comments</span>
+            </div>
+            <div class="icons d-flex justify-content-around p-1 border-top">
+                <span class="text-secondary">
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                </span>
+                <span class="text-secondary"><i
+                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                    Comment</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                    Repost</span>
+                <span class="text-secondary"><i
+                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                    Send</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-4 third-column">
+        <div>
+            <ul class="list-group">
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                </li>
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                </li>
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                </li>
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                </li>
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <img src="https://media.licdn.com/media/AAYQAgTPAAgAAQAAAAAAADVuOvKzTF-3RD6j-qFPqhubBQ.png"
+                alt="" class="card-image">
+        </div>
+        <footer class="right-col mt-3">
+            <ul class="d-flex flex-wrap gap-2">
+                <li><a class="link-secondary" href="">About</a></li>
+                <li><a class="link-secondary" href="">Accessibility</a></li>
+                <li><a class="link-secondary" href="">Help Center</a></li>
+                <li><a class="link-secondary" href="">Privacy & Terms</a></li>
+                <li><a class="link-secondary" href="">Ad Choices</a></li>
+                <li><a class="link-secondary" href="">Advertising</a></li>
+                <li><a class="link-secondary" href="">Business Services</a></li>
+                <li><a class="link-secondary" href="">Get the LinkedIn app</a>
+                </li>
+                <li><a class="link-secondary" href="">More</a></li>
+            </ul>
+            <div class="mb-5">
+                <p class="text-center"><img
+                        src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png"
+                        alt="" width="50px"> LinkedIn Corporation © 2023</p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
