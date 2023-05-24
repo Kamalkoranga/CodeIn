@@ -73,24 +73,29 @@
                 <a href="" class="navbar-brand">
                     <i class="fa-brands fa-linkedin fa-2x"></i>
                 </a>
+                {% if current_user.is_authenticated %}
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search"
                         placeholder="Search" aria-label="Search">
                 </form>
+                {% endif %}
             </div>
             <div class="col-6 d-flex justify-content-end gap-5 align-items-center me-5">
+                {% if current_user.is_authenticated %}
                 <a href="" class="position-relative">
                     <i class="fa-solid fa-house fa-xl active"></i>
                     <span class="position-absolute top-0 start-50 translate-middle-y p-2 bg-danger border border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span>
                     </span>
                 </a>
+                {% endif %}
                 <a href="">
                     <i class="fa-solid fa-network-wired fa-xl"></i>
                 </a>
                 <a href="">
                     <i class="fa-sharp fa-solid fa-briefcase fa-xl"></i>
                 </a>
+                {% if current_user.is_authenticated %}
                 <a href="">
                     <i class="fa-solid fa-comment-dots fa-xl"></i>
                 </a>
@@ -100,18 +105,32 @@
                 <a href="">
                     <i class="fa-solid fa-user fa-xl"></i>
                 </a>
+                {% else %}
+                <div class="vr"></div>
+                <a href=""><strong>Join now</strong></a>
+                <a href="" class="btn btn-outline-primary">Sign in</a>
+                {% endif %}
             </div>
+            {% if current_user.is_authenticated %}
             <div class="col-3 d-flex align-items-center gap-2">                
                 <a href="" class="dropdown">
                     <i class="fa-solid fa-braille fa-xl menu"></i>
                 </a>
                 <a href="" style="font-size: 0.8em;" class="ms-2 text-warning-emphasis">Get Hired Faster,<br>Try Premium Free</a>
             </div>
+            {% endif %}
         </div>
     </nav>
     {% endblock nav %}
 
     <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+        </div>
+        {% endfor %}
+        
         {% block content %}{% endblock content %}
     </div>
 

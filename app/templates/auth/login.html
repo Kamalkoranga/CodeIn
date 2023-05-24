@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}LinkedIn: Log In or Sign Up{% endblock title %}
+
+{% block style %}
+<style>
+    .left form > *, .left > a {
+        margin-top: 1em !important;
+    }
+
+    .left form label {
+        margin-bottom: 0.5em;
+    }
+
+    .left h1 {
+        color: #8f5849;
+        font-size: 52px !important;
+        font-weight: 200;
+    }
+
+    #submit {
+        background-color: #0d6efd;
+        color: #fff;
+        width: 100%;
+    }
+
+    .left > a {
+        width: 100%;
+    }
+
+    .right img {
+        width: 125%;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-5 left px-5">
+        <h1 class="mb-5">Welcome to your professional community</h1>
+        {{ wtf.quick_form(form) }}
+        <a href="{{url_for('auth.register')}}" class="btn btn-outline-secondary">New to LinkedIn? Join now</a>
+    </div>
+
+    <div class="col-7 right px-5">
+        <img src="{{url_for('static', filename='images/linkedin-hero.svg')}}" alt="hero-image">
+    </div>
+</div>
+{% endblock content %}

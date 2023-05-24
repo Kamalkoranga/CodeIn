@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Sign Up | LinkedIn{% endblock title %}
+
+{% block style %}
+<style>
+    .left form > * {
+        margin-top: 1em !important;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .left form label {
+        margin-bottom: 0.5em;
+    }
+
+    #submit {
+        background-color: #0d6efd;
+        color: #fff;
+        width: 100%;
+    }
+
+    .right img {
+        width: 125%;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="row align-items-center justify-content-center">
+    <div class="col-7 left px-5">
+        <h2 class="mb-5">Make the most of your professional life</h2>
+        {{ wtf.quick_form(form) }}
+        <p class="text-center mt-4">Already on LinkedIn? <a href="{{url_for('auth.login')}}"> Sign in</a></p>
+    </div>
+</div>
+{% endblock content %}
