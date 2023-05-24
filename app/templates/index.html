@@ -47,12 +47,16 @@
     .comments:hover {
         text-decoration: underline;
     }
+
+    .left {
+        max-width: 18em;
+    }
 </style>
 {% endblock style %}
 
 {% block content %}
 <div class="row">
-    <div class="col-xl-3 col-lg-3 col-md-4">
+    <div class="col-xl-3 col-lg-3 col-md-4 left">
         <div class="card">
             <img src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
                 class="card-img-top" alt="...">
@@ -111,6 +115,8 @@
             </div>
         </div>
 
+        <hr>
+
         <div class="card post my-3 ">
             <div class="card-body mb-0">
                 <div
@@ -427,7 +433,7 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-lg-4 third-column">
+    <div class="col-xl-3 col-lg-4 third-column flex-fill">
         <div>
             <ul class="list-group">
                 <li
