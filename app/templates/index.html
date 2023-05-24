@@ -25,14 +25,14 @@
         cursor: pointer;
     }
 
-    .icons span {
+    .icons span, .start-icon p {
         font-weight: bold;
         cursor: pointer;
         padding: 1em;
         border-radius: 5px;
     }
 
-    .icons span:hover {
+    .icons span:hover, .start-icon p:hover {
         background-color: rgb(219, 217, 217);
     }
 
@@ -90,21 +90,21 @@
                             data-bs-target="#exampleModal">
                     </form>
                 </div>
-                <div class="d-flex justify-content-around">
-                    <p>
-                        <i class="fa-regular fa-image me-2"
+                <div class="d-flex justify-content-around start-icon flex-wrap">
+                    <p class="text-secondary">
+                        <i class="fa-regular fa-image me-2 fa-xl"
                             style="color: #70a5ff;"></i> Photo
                     </p>
-                    <p>
-                        <i class="fa-brands fa-youtube me-2"
+                    <p class="text-secondary">
+                        <i class="fa-brands fa-youtube me-2 fa-xl"
                             style="color: #28cc49;"></i> Video
                     </p>
-                    <p>
-                        <i class="fa-regular fa-calendar-minus me-2"
+                    <p class="text-secondary">
+                        <i class="fa-regular fa-calendar-minus me-2 fa-xl"
                             style="color: #b07017;"></i> Audio Event
                     </p>
-                    <p>
-                        <i class="fa-solid fa-newspaper me-2"
+                    <p class="text-secondary">
+                        <i class="fa-solid fa-newspaper me-2 fa-xl"
                             style="color: #ff4000;"></i> Write Article
                     </p>
                 </div>
