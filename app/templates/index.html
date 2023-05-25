@@ -140,7 +140,9 @@
                     <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
                     <div class="d-flex flex-column">
                         <span><strong>{{ post.author.username }}</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">{{ post.author.about_me[:70] }}{% if post.author.about_me|length > 70 %}...{% endif %}</p>
+                        {% if post.author.about_me %}
+                            <p class="text-secondary m-0">{{ post.author.about_me[:70] }}{% if post.author.about_me|length > 70 %}...{% endif %}</p>
+                        {% endif %}
                         <p class="text-secondary m-0">{{ moment(post.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i></p>
                     </div>
                 </div>

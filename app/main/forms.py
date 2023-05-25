@@ -18,7 +18,7 @@ class EditProfileForm(FlaskForm):
                'Usernames must have only letters, numbers, dots or '
                'underscores')]
     )
-    name = StringField('Real name', validators=[Length(0, 64)])
+    name = StringField('Full name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
     submit = SubmitField('Submit')

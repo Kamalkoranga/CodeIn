@@ -5,7 +5,7 @@ from . import login_manager
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from datetime import datetime
-from sqlalchemy import BINARY
+from sqlalchemy import LargeBinary
 
 
 class User(db.Model, UserMixin):
@@ -70,6 +70,6 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     post_name = db.Column(db.String(100))
-    post_data = db.Column(BINARY)
+    post_data = db.Column(LargeBinary)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
