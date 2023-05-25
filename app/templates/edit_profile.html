@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Edit Profile | CodeIn{% endblock title %}
+
+{% block style %}
+<style>
+    form > * {
+        margin-bottom: 0.8em;
+    }
+
+    label {
+        margin-bottom: 0.4em;
+    }
+
+    #submit {
+        color: #fff;
+        background-color: #0d6efd;
+        width: 100%;
+    }
+
+    .cancel {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Edit Your Profile</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+    <a href="{{url_for('main.user', username=current_user.username)}}" class="btn btn-secondary cancel">Cancel</a>
+</div>
+{% endblock content %}

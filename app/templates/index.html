@@ -140,7 +140,7 @@
                     <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
                     <div class="d-flex flex-column">
                         <span><strong>{{ post.author.username }}</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">About the author</p>
+                        <p class="text-secondary m-0">{{ post.author.about_me[:70] }}{% if post.author.about_me|length > 70 %}...{% endif %}</p>
                         <p class="text-secondary m-0">{{ moment(post.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i></p>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                 </li>
             </ul>
         </div>
-        <div class="sticky-top" style="top: 5em;">
+        <div class="sticky-top z-1" style="top: 5em;">
             <div class="card mt-3">
                 <img src="https://media.licdn.com/media/AAYQAgTPAAgAAQAAAAAAADVuOvKzTF-3RD6j-qFPqhubBQ.png"
                     alt="" class="card-image">
