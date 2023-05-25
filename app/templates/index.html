@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block title %}Feed | LinkedIn{% endblock title %}
 
@@ -50,6 +51,20 @@
 
     .left {
         max-width: 18em;
+    }
+
+    .post-form form > * {
+        margin: 1em 0;
+    }
+
+    .post-form label {
+        margin-bottom: 0.5em;
+    }
+
+    #submit {
+        background-color: #0d6efd;
+        color: #fff;
+        float: right;
     }
 </style>
 {% endblock style %}
@@ -117,48 +132,26 @@
 
         <hr>
 
+        {% for post in posts %}    
         <div class="card post my-3 ">
             <div class="card-body mb-0">
-                <div
-                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
-                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
-                alt="" class="profile">
-                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                <div class="d-flex flex-column">
-                        <span><strong>mubashir raza</strong>• 3rd+</span>
+                <div class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2">
+                    <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA" alt="" class="profile">
+                    <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                    <div class="d-flex flex-column">
+                        <span><strong>{{ post.author.username }}</strong>• 3rd+</span>
                         <p class="text-secondary m-0">About the author</p>
-                        <p class="text-secondary m-0">2h • <i
-                                class="fa-solid fa-earth-asia"></i></p>
+                        <p class="text-secondary m-0">{{ moment(post.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i></p>
                     </div>
                 </div>
                 <p class="post-body mb-0">
-                    What is your favorite part of programming? 🚀 <br><br>
-
-                    Programmers enjoy coding and are always looking for new ways
-                    to solve problems. ⚡️ <br><br>
-
-                    Every day brings a new challenge, a new algorithm to write,
-                    or a bug to fix. They are constantly learning and
-                    experimenting. <br><br>
-
-                    Despite the intense concentration required, programmers are
-                    also highly creative people. They think outside the box to
-                    find creative solutions to complex problems. They are
-                    problem solvers who are always looking for the most
-                    efficient and elegant solution to any problem.🎉 <br><br>
-
-                    A programmer's life is full of challenges, creativity, and a
-                    sense of accomplishment. There are no limits to what you can
-                    achieve in coding if you have the dedication and drive.🫶🏻
-                    <br><br>
-
-                    Tell us about your favorite part as a programmer in the
-                    comment section down below! 👇🏻<br><br>
+                    {{ post.body }}
                 </p>
             </div>
-            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
-                alt="">
-            <div class="d-flex justify-content-between align-items-center py-2 px-3">
+            {% if post.post_name %}  
+            <img src="{{ url_for('main.get_image', id=post.id) }}">
+            {% endif %}
+            <div class="d-flex justify-content-between align-items-center py-2 px-3 border-top">
                 <span>
                     <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
                 </span>
@@ -179,258 +172,7 @@
                     Send</span>
             </div>
         </div>
-
-        <div class="card post my-3 ">
-            <div class="card-body mb-0">
-                <div
-                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
-                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
-                alt="" class="profile">
-                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                <div class="d-flex flex-column">
-                        <span><strong>mubashir raza</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">About the author</p>
-                        <p class="text-secondary m-0">2h • <i
-                                class="fa-solid fa-earth-asia"></i></p>
-                    </div>
-                </div>
-                <p class="post-body mb-0">
-                    What is your favorite part of programming? 🚀 <br><br>
-
-                    Programmers enjoy coding and are always looking for new ways
-                    to solve problems. ⚡️ <br><br>
-
-                    Every day brings a new challenge, a new algorithm to write,
-                    or a bug to fix. They are constantly learning and
-                    experimenting. <br><br>
-
-                    Despite the intense concentration required, programmers are
-                    also highly creative people. They think outside the box to
-                    find creative solutions to complex problems. They are
-                    problem solvers who are always looking for the most
-                    efficient and elegant solution to any problem.🎉 <br><br>
-
-                    A programmer's life is full of challenges, creativity, and a
-                    sense of accomplishment. There are no limits to what you can
-                    achieve in coding if you have the dedication and drive.🫶🏻
-                    <br><br>
-
-                    Tell us about your favorite part as a programmer in the
-                    comment section down below! 👇🏻<br><br>
-                </p>
-            </div>
-            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
-                alt="">
-            <div class="d-flex justify-content-between align-items-center py-2 px-3">
-                <span>
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
-                </span>
-                <span class="text-secondary comments">5 comments</span>
-            </div>
-            <div class="icons d-flex justify-content-around p-1 border-top">
-                <span class="text-secondary">
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
-                </span>
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
-                    Comment</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
-                    Send</span>
-            </div>
-        </div>
-
-        <div class="card post my-3 ">
-            <div class="card-body mb-0">
-                <div
-                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
-                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
-                alt="" class="profile">
-                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                <div class="d-flex flex-column">
-                        <span><strong>mubashir raza</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">About the author</p>
-                        <p class="text-secondary m-0">2h • <i
-                                class="fa-solid fa-earth-asia"></i></p>
-                    </div>
-                </div>
-                <p class="post-body mb-0">
-                    What is your favorite part of programming? 🚀 <br><br>
-
-                    Programmers enjoy coding and are always looking for new ways
-                    to solve problems. ⚡️ <br><br>
-
-                    Every day brings a new challenge, a new algorithm to write,
-                    or a bug to fix. They are constantly learning and
-                    experimenting. <br><br>
-
-                    Despite the intense concentration required, programmers are
-                    also highly creative people. They think outside the box to
-                    find creative solutions to complex problems. They are
-                    problem solvers who are always looking for the most
-                    efficient and elegant solution to any problem.🎉 <br><br>
-
-                    A programmer's life is full of challenges, creativity, and a
-                    sense of accomplishment. There are no limits to what you can
-                    achieve in coding if you have the dedication and drive.🫶🏻
-                    <br><br>
-
-                    Tell us about your favorite part as a programmer in the
-                    comment section down below! 👇🏻<br><br>
-                </p>
-            </div>
-            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
-                alt="">
-            <div class="d-flex justify-content-between align-items-center py-2 px-3">
-                <span>
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
-                </span>
-                <span class="text-secondary comments">5 comments</span>
-            </div>
-            <div class="icons d-flex justify-content-around p-1 border-top">
-                <span class="text-secondary">
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
-                </span>
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
-                    Comment</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
-                    Send</span>
-            </div>
-        </div>
-
-        <div class="card post my-3 ">
-            <div class="card-body mb-0">
-                <div
-                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
-                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
-                alt="" class="profile">
-                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                <div class="d-flex flex-column">
-                        <span><strong>mubashir raza</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">About the author</p>
-                        <p class="text-secondary m-0">2h • <i
-                                class="fa-solid fa-earth-asia"></i></p>
-                    </div>
-                </div>
-                <p class="post-body mb-0">
-                    What is your favorite part of programming? 🚀 <br><br>
-
-                    Programmers enjoy coding and are always looking for new ways
-                    to solve problems. ⚡️ <br><br>
-
-                    Every day brings a new challenge, a new algorithm to write,
-                    or a bug to fix. They are constantly learning and
-                    experimenting. <br><br>
-
-                    Despite the intense concentration required, programmers are
-                    also highly creative people. They think outside the box to
-                    find creative solutions to complex problems. They are
-                    problem solvers who are always looking for the most
-                    efficient and elegant solution to any problem.🎉 <br><br>
-
-                    A programmer's life is full of challenges, creativity, and a
-                    sense of accomplishment. There are no limits to what you can
-                    achieve in coding if you have the dedication and drive.🫶🏻
-                    <br><br>
-
-                    Tell us about your favorite part as a programmer in the
-                    comment section down below! 👇🏻<br><br>
-                </p>
-            </div>
-            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
-                alt="">
-            <div class="d-flex justify-content-between align-items-center py-2 px-3">
-                <span>
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
-                </span>
-                <span class="text-secondary comments">5 comments</span>
-            </div>
-            <div class="icons d-flex justify-content-around p-1 border-top">
-                <span class="text-secondary">
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
-                </span>
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
-                    Comment</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
-                    Send</span>
-            </div>
-        </div>
-
-        <div class="card post my-3 ">
-            <div class="card-body mb-0">
-                <div
-                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative">
-                <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
-                alt="" class="profile">
-                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                <div class="d-flex flex-column">
-                        <span><strong>mubashir raza</strong>• 3rd+</span>
-                        <p class="text-secondary m-0">About the author</p>
-                        <p class="text-secondary m-0">2h • <i
-                                class="fa-solid fa-earth-asia"></i></p>
-                    </div>
-                </div>
-                <p class="post-body mb-0">
-                    What is your favorite part of programming? 🚀 <br><br>
-
-                    Programmers enjoy coding and are always looking for new ways
-                    to solve problems. ⚡️ <br><br>
-
-                    Every day brings a new challenge, a new algorithm to write,
-                    or a bug to fix. They are constantly learning and
-                    experimenting. <br><br>
-
-                    Despite the intense concentration required, programmers are
-                    also highly creative people. They think outside the box to
-                    find creative solutions to complex problems. They are
-                    problem solvers who are always looking for the most
-                    efficient and elegant solution to any problem.🎉 <br><br>
-
-                    A programmer's life is full of challenges, creativity, and a
-                    sense of accomplishment. There are no limits to what you can
-                    achieve in coding if you have the dedication and drive.🫶🏻
-                    <br><br>
-
-                    Tell us about your favorite part as a programmer in the
-                    comment section down below! 👇🏻<br><br>
-                </p>
-            </div>
-            <img src="https://media.licdn.com/dms/image/D4D22AQEkKKBQX9DJfg/feedshare-shrink_800/0/1684497712712?e=1687392000&v=beta&t=LQ1dlt1wBen1vvcQGK6-qkM0ySxpc50zU7jnHyDMuoE"
-                alt="">
-            <div class="d-flex justify-content-between align-items-center py-2 px-3">
-                <span>
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
-                </span>
-                <span class="text-secondary comments">5 comments</span>
-            </div>
-            <div class="icons d-flex justify-content-around p-1 border-top">
-                <span class="text-secondary">
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
-                </span>
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
-                    Comment</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
-                    Send</span>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
     <div class="col-xl-3 col-lg-4 third-column flex-fill">
@@ -505,21 +247,16 @@
 <div class="modal fade" id="exampleModal" tabindex="-1"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content post-form">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title
+                <h1 class="modal-title fs-4" id="exampleModalLabel">
+                    Create a post
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save
-                    changes</button>
+                {{ wtf.quick_form(form) }}
             </div>
         </div>
     </div>

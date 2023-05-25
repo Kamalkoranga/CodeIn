@@ -137,7 +137,7 @@
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">&times;</button>
             {{ message }}
         </div>
@@ -153,6 +153,7 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous">
         </script>
+    {{ moment.include_moment() }}
 </body>
 
 </html>
