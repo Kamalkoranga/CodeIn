@@ -26,14 +26,16 @@
         cursor: pointer;
     }
 
-    .icons span, .start-icon p {
+    .icons span,
+    .start-icon p {
         font-weight: bold;
         cursor: pointer;
         padding: 1em;
         border-radius: 5px;
     }
 
-    .icons span:hover, .start-icon p:hover {
+    .icons span:hover,
+    .start-icon p:hover {
         background-color: rgb(219, 217, 217);
     }
 
@@ -53,7 +55,39 @@
         max-width: 18em;
     }
 
-    .post-form form > * {
+    .left .card-title {
+        font-weight: bolder;
+        font-size: 17px !important;
+    }
+
+    .left img {
+        width: 25%;
+        border-radius: 50%;
+    }
+
+    .left span {
+        font-size: 12px;
+    }
+
+    .left strong {
+        font-size: 13px !important;
+    }
+
+    .left .premium {
+        text-decoration: underline;
+    }
+
+    .left .groups a {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .left .groups li:hover {
+        color: #000 !important;
+        background-color: rgb(233, 233, 233);
+    }
+
+    .post-form form>* {
         margin: 1em 0;
     }
 
@@ -74,22 +108,63 @@
     <div class="col-xl-3 col-lg-3 col-md-4 left">
         <div class="card">
             <img src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
-                class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the
-                    card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-        <div class="card my-3 sticky-top" style="top: 5em;">
-            <div class="card-header">
-                Featured
+                class="card-img-top mx-auto mt-4" alt="...">
+            <div class="card-body text-center">
+                {% if not current_user.name %}
+                <a href="{{url_for('main.user', username=current_user.username)}}"
+                    class="card-title link-underline link-underline-opacity-0 link-underline-opacity-100-hover">{{
+                    current_user.username }}</a>
+                {% else %}
+                <a href="{{url_for('main.user', username=current_user.username)}}"
+                    class="card-title link-underline link-underline-opacity-0 link-underline-opacity-100-hover">{{
+                    current_user.name }}</a>
+                {% endif %}
+
+                {% if current_user.about_me %}
+                <p class="card-text">
+                    {{ current_user.about_me }}
+                </p>
+                {% else %}
+                --
+                {% endif %}
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
+                <li class="list-group-item py-3"><a href="#"
+                        class="link-underline link-underline-opacity-0">
+                        <strong class="text-dark">Analytics & tools</strong><br>
+                        <span class="text-secondary">30 post impressions</span>
+                    </a></li>
+                <li class="list-group-item py-3"><a href="#"
+                        class="link-underline link-underline-opacity-0">
+                        <span class="text-secondary">Access exclusive tools &
+                            insights</span><br>
+                        <strong class="text-dark premium"><i
+                                class="fa-solid fa-note-sticky me-2"
+                                style="color: rgb(248, 199, 126);"></i>Get Hired
+                            Faster, Try Premium Free</strong>
+                    </a></li>
+                <li class="list-group-item py-3"><a href="#"
+                        class="link-underline link-underline-opacity-0">
+                        <strong class="text-dark"><i
+                                class="fa-solid fa-bookmark me-2 text-secondary"></i>My
+                            items</strong>
+                    </a></li>
+            </ul>
+        </div>
+        <div class="card my-3 sticky-top groups" style="top: 5em;">
+            <div class="card-header">
+                Recent
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
+                            class="fa-solid fa-people-group me-2"></i>Python
+                        Developer Comm...</a></li>
+                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
+                            class="fa-solid fa-people-group me-2"></i>HackerRank
+                        Intreview Produ...</a></li>
+                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
+                            class="fa-solid fa-people-group me-2"></i>SQL Server
+                        Business Intellig...</a></li>
             </ul>
         </div>
     </div>
@@ -132,36 +207,50 @@
 
         <hr>
 
-        {% for post in posts %}    
+        {% for post in posts %}
         <div class="card post my-3 ">
             <div class="card-body mb-0">
-                <div class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2">
-                    <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA" alt="" class="profile">
-                    <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div
+                    class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2">
+                    <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                        alt="" class="profile">
+                    <i
+                        class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
                     <div class="d-flex flex-column">
-                        <span><strong>{{ post.author.username }}</strong>• 3rd+</span>
+                        <span><strong>{{ post.author.username }}</strong>•
+                            3rd+</span>
                         {% if post.author.about_me %}
-                            <p class="text-secondary m-0">{{ post.author.about_me[:70] }}{% if post.author.about_me|length > 70 %}...{% endif %}</p>
+                        <p class="text-secondary m-0">{{
+                            post.author.about_me[:70] }}{% if
+                            post.author.about_me|length > 70 %}...{% endif %}
+                        </p>
                         {% endif %}
-                        <p class="text-secondary m-0">{{ moment(post.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i></p>
+                        <p class="text-secondary m-0">{{
+                            moment(post.timestamp).fromNow() }} • <i
+                                class="fa-solid fa-earth-asia"></i></p>
                     </div>
                 </div>
                 <p class="post-body mb-0">
                     {{ post.body }}
                 </p>
             </div>
-            {% if post.post_name %}  
+            {% if post.post_name %}
             <img src="{{ url_for('main.get_image', id=post.id) }}">
             {% endif %}
-            <div class="d-flex justify-content-between align-items-center py-2 px-3 border-top">
+            <div
+                class="d-flex justify-content-between align-items-center py-2 px-3 border-top">
                 <span>
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp; 46
+                    <i
+                        class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp;
+                    46
                 </span>
                 <span class="text-secondary comments">5 comments</span>
             </div>
             <div class="icons d-flex justify-content-around p-1 border-top">
                 <span class="text-secondary">
-                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp; Like
+                    <i
+                        class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp;
+                    Like
                 </span>
                 <span class="text-secondary"><i
                         class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
@@ -227,11 +316,14 @@
                     <li><a class="link-secondary" href="">About</a></li>
                     <li><a class="link-secondary" href="">Accessibility</a></li>
                     <li><a class="link-secondary" href="">Help Center</a></li>
-                    <li><a class="link-secondary" href="">Privacy & Terms</a></li>
+                    <li><a class="link-secondary" href="">Privacy & Terms</a>
+                    </li>
                     <li><a class="link-secondary" href="">Ad Choices</a></li>
                     <li><a class="link-secondary" href="">Advertising</a></li>
-                    <li><a class="link-secondary" href="">Business Services</a></li>
-                    <li><a class="link-secondary" href="">Get the LinkedIn app</a>
+                    <li><a class="link-secondary" href="">Business Services</a>
+                    </li>
+                    <li><a class="link-secondary" href="">Get the LinkedIn
+                            app</a>
                     </li>
                     <li><a class="link-secondary" href="">More</a></li>
                 </ul>
