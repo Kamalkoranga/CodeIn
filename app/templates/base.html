@@ -102,9 +102,16 @@
                 <a href="">
                     <i class="fa-solid fa-bell fa-xl"></i>
                 </a>
-                <a href="">
-                    <i class="fa-solid fa-user fa-xl"></i>
-                </a>
+                <div class="dropdown">
+                    <a href="" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user fa-xl"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
                 {% else %}
                 <div class="vr"></div>
                 <a href=""><strong>Join now</strong></a>
@@ -125,9 +132,9 @@
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">&times;</button>
+            {{ message }}
         </div>
         {% endfor %}
         

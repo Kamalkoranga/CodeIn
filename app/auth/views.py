@@ -2,7 +2,7 @@ from . import auth
 from flask import render_template
 from .forms import LoginForm, RegistrationForm
 from ..models import User
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 from flask import request, url_for, redirect, flash
 from .. import db
 import random
@@ -28,6 +28,7 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    logout_user()
     flash('You have been logged out.')
     return redirect(url_for('auth.login'))
 
