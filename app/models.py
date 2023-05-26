@@ -3,9 +3,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 from itsdangerous import URLSafeTimedSerializer as Serializer
-from flask import current_app
+from flask import current_app, request
 from datetime import datetime
 from sqlalchemy import LargeBinary
+import hashlib
 
 
 class User(db.Model, UserMixin):
@@ -18,9 +19,15 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
+    avatar_hash = db.Column(db.String(32))
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = self.gravatar_hash()
 
     def ping(self):
         self.last_seen = datetime.utcnow()
@@ -55,6 +62,14 @@ class User(db.Model, UserMixin):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def gravatar_hash(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        url = 'https://secure.gravatar.com/avatar'
+        hash = self.avatar_hash or self.gravatar_hash()
+        return f'{url}/{hash}?s={size}&d={default}&r={rating}'
 
     def __repr__(self):
         return '<User %r>' % self.username

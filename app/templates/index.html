@@ -107,7 +107,7 @@
 <div class="row">
     <div class="col-xl-3 col-lg-3 col-md-4 left">
         <div class="card">
-            <img src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
+            <img src="{{ current_user.gravatar(size=256) }}"
                 class="card-img-top mx-auto mt-4" alt="...">
             <div class="card-body text-center">
                 {% if not current_user.name %}
@@ -121,11 +121,11 @@
                 {% endif %}
 
                 {% if current_user.about_me %}
-                <p class="card-text">
+                <p class="card-text text-secondary" style="font-size: 12px;">
                     {{ current_user.about_me }}
                 </p>
                 {% else %}
-                --
+                <p>--</p>
                 {% endif %}
             </div>
             <ul class="list-group list-group-flush">
@@ -173,8 +173,8 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex gap-3 align-items-center mb-3">
-                    <img class="profile col-2"
-                        src="https://media.licdn.com/dms/image/D4D03AQE1ooATMdElIA/profile-displayphoto-shrink_100_100/0/1680019183019?e=1689811200&v=beta&t=WgoxbsrEGgZYZVAx5lTothQR9eQ57G4aiJ8AWoTsQrQ"
+                    <img class="profile col-2" 
+                        src="{{ current_user.gravatar(size=256) }}"
                         alt="">
                     <form class="col-10">
                         <input type="text"
@@ -212,7 +212,7 @@
             <div class="card-body mb-0">
                 <div
                     class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2">
-                    <img src="https://media.licdn.com/dms/image/C4D03AQH3cgrC30jmPw/profile-displayphoto-shrink_100_100/0/1653036570169?e=1689811200&v=beta&t=T_MjrwPkRk2c-_aIQTi2qrRL5fawd7i1hBlmjQt8CYA"
+                    <img src="{{ post.author.gravatar(size=256) }}"
                         alt="" class="profile">
                     <i
                         class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
