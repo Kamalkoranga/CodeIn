@@ -114,6 +114,25 @@
         color: #0d6efd;
         text-decoration: underline;
     }
+
+    .news-list a {
+        border: 0;
+    }
+
+    .news-header {
+        font-weight: bold;
+        font-size: 18px;
+        border: 0;
+        background-color: #fff;
+    }
+
+    .news-list a:hover {
+        background-color: rgba(230, 227, 227, 0.801);
+    }
+
+    .news-list strong {
+        color: #000;
+    }
 </style>
 {% endblock style %}
 
@@ -344,45 +363,49 @@
     </div>
 
     <div class="col-xl-3 col-lg-4 third-column flex-fill">
-        <div>
-            <ul class="list-group">
-                <li
-                    class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Content for list item
+        <div class="card">
+            <div class="card-header news-header">
+                LinkedIn News
+            </div>
+            <ul class="news-list list-group list-group-flush list-group-circled">
+                <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
+                    <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
+                    <div>
+                        <strong>State Street to hire 5,000</strong><br>
+                        <span style="font-size: 12px;" class="text-secondary">2d ago • 35,131 readers</span>
                     </div>
-                </li>
-                <li
-                    class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Content for list item
+                </a>
+                <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
+                    <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
+                    <div>
+                        <strong>What Gen Z wants from an employer</strong><br>
+                        <span style="font-size: 12px;" class="text-secondary">23h ago • 2,299 readers</span>
                     </div>
-                </li>
-                <li
-                    class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Content for list item
+                </a>
+                <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
+                    <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
+                    <div>
+                        <strong>Women shine in UPSC exams</strong><br>
+                        <span style="font-size: 12px;" class="text-secondary">2d ago • 1,276 readers</span>
                     </div>
-                </li>
-                <li
-                    class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Content for list item
+                </a>
+                <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
+                    <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
+                    <div>
+                        <strong>Fresh VC funds for startups</strong><br>
+                        <span style="font-size: 12px;" class="text-secondary">1d ago • 12,894 readers</span>
                     </div>
-                </li>
-                <li
-                    class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">Subheading</div>
-                        Content for list item
+                </a>
+                <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
+                    <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
+                    <div>
+                        <strong>Banks brace for 2,000-notes rush</strong><br>
+                        <span style="font-size: 12px;" class="text-secondary">4d ago • 978 readers</span>
                     </div>
-                </li>
+                </a>
             </ul>
-        </div>
+          </div>
+
         <div class="sticky-top z-1" style="top: 5em;">
             <div class="card mt-3">
                 <img src="https://media.licdn.com/media/AAYQAgTPAAgAAQAAAAAAADVuOvKzTF-3RD6j-qFPqhubBQ.png"
