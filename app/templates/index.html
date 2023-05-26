@@ -100,6 +100,20 @@
         color: #fff;
         float: right;
     }
+
+    .post-top > span > strong {
+        color: #000;
+        font-size: 14px;
+    }
+
+    .post-top > * {
+        font-size: 12px;
+    }
+
+    .post-top > span > strong:hover {
+        color: #0d6efd;
+        text-decoration: underline;
+    }
 </style>
 {% endblock style %}
 
@@ -156,15 +170,76 @@
                 Recent
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
-                            class="fa-solid fa-people-group me-2"></i>Python
-                        Developer Comm...</a></li>
-                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
-                            class="fa-solid fa-people-group me-2"></i>HackerRank
-                        Intreview Produ...</a></li>
-                <li class="list-group-item"><a href="#" class="text-secondary link-underline link-underline-opacity-0"><i
-                            class="fa-solid fa-people-group me-2"></i>SQL Server
-                        Business Intellig...</a></li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Python Developer Comm...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        HackerRank Intreview Produ...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        SQL Server Business Intellig...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Django
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Flask
+                    </a>
+                </li>
+            </ul>
+
+            <div class="card-header text-primary">Groups</div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Python Developer Comm...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        HackerRank Intreview Produ...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        SQL Server Business Intellig...
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Django
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        Flask
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
+                        <i class="fa-solid fa-people-group me-2"></i>
+                        CS50
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -210,15 +285,17 @@
         {% for post in posts %}
         <div class="card post my-3 ">
             <div class="card-body mb-0">
-                <div
-                    class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2">
+                <a
+                    class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                    href="{{url_for('main.user', username=post.author.username)}}">
                     <img src="{{ post.author.gravatar(size=256) }}"
                         alt="" class="profile">
                     <i
                         class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                    <div class="d-flex flex-column">
-                        <span><strong>{{ post.author.username }}</strong>•
-                            3rd+</span>
+                    <div class="d-flex flex-column post-top">
+                        <span class="text-secondary fs-6">
+                            <strong>{{ post.author.name }}</strong> • 3rd+
+                        </span>
                         {% if post.author.about_me %}
                         <p class="text-secondary m-0">{{
                             post.author.about_me[:70] }}{% if
@@ -229,7 +306,7 @@
                             moment(post.timestamp).fromNow() }} • <i
                                 class="fa-solid fa-earth-asia"></i></p>
                     </div>
-                </div>
+                </a>
                 <p class="post-body mb-0">
                     {{ post.body }}
                 </p>
