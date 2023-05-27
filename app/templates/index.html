@@ -321,6 +321,11 @@
             </div>
         </div>
 
+        <!--
+            TODO: Sort posts according to: 
+                - most liked post
+                - recent post 
+         -->
         <hr>
 
         {% for post in posts %}
@@ -371,23 +376,23 @@
                 -->
                 {% if current_user.id in post.likes|map(attribute="author_id")|list %}
                 <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}})">
-                    <i class="fas fa-thumbs-up fa-flip-horizontal fa-2xl" id="like-button-{{post.id}}">
+                    <i class="fas fa-thumbs-up fa-flip-horizontal fa-xl" id="like-button-{{post.id}}">
                     </i>&nbsp; Like
                 </span>
                 {% else %}
                 <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }})">
-                    <i class="far fa-thumbs-up fa-2xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
+                    <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
                 </span>
                 {% endif %}
 
                 <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
+                        class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
                     Comment</span>
                 <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-2xl"></i>&nbsp;
+                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
                     Repost</span>
                 <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-2xl"></i>&nbsp;
+                        class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
                     Send</span>
             </div>
         </div>
@@ -525,10 +530,10 @@
                 // Updating the like count and visual styles class based on the response data
                 likeCount.innerHTML = data["likes"];
                 if (data["liked"] === true) {
-                    likeButton.className = "fas fa-thumbs-up fa-2xl fa-flip-horizontal text-primary";
+                    likeButton.className = "fas fa-thumbs-up fa-xl fa-flip-horizontal text-primary";
                     likeSpan.className = "text-primary"
                 } else {
-                    likeButton.className = "far fa-thumbs-up fa-2xl fa-flip-horizontal text-secondary";
+                    likeButton.className = "far fa-thumbs-up fa-xl fa-flip-horizontal text-secondary";
                     likeSpan.className = "text-secondary"
                 }
             })
