@@ -120,7 +120,7 @@
                 </a>
                 <div class="dropdown">
                     <a href="" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ current_user.gravatar(size=25) }}" class="rounded-circle" alt="">
+                        <img style="width: 1.7em;" src="{{ current_user.gravatar(size=256) }}" class="rounded-circle" alt="your profile-photo">
                     </a>
                     <ul class="dropdown-menu z-3">
                         <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a></li>
