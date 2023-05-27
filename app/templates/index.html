@@ -358,18 +358,28 @@
             <div
                 class="d-flex justify-content-between align-items-center py-2 px-3 border-top">
                 <span>
-                    <i
-                        class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp;
-                    46
+                    <i class="fa-regular fa-thumbs-up fa-flip-horizontal text-primary"></i>&nbsp;
+                    <span id="likes-count-{{post.id}}">
+                        {{ post.likes|length }}
+                    </span>
                 </span>
                 <span class="text-secondary comments">5 comments</span>
             </div>
-            <div class="icons d-flex justify-content-around p-1 border-top">
-                <span class="text-secondary">
-                    <i
-                        class="fa-regular fa-thumbs-up fa-flip-horizontal text-secondary fa-2xl"></i>&nbsp;
-                    Like
+            <div class="icons d-flex justify-content-around p-1 border-top align-items-center">
+                <!--
+                    Here we checked if the current user has liked the post or not 
+                -->
+                {% if current_user.id in post.likes|map(attribute="author_id")|list %}
+                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}})">
+                    <i class="fas fa-thumbs-up fa-flip-horizontal fa-2xl" id="like-button-{{post.id}}">
+                    </i>&nbsp; Like
                 </span>
+                {% else %}
+                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }})">
+                    <i class="far fa-thumbs-up fa-2xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
+                </span>
+                {% endif %}
+
                 <span class="text-secondary"><i
                         class="fa-regular fa-comment-dots fa-2xl text-secondary"></i>&nbsp;
                     Comment</span>
@@ -430,7 +440,7 @@
 
         <div class="sticky-top z-1" style="top: 5em;">
             <div class="card mt-3">
-                <img src="https://media.licdn.com/media/AAYQAgTPAAgAAQAAAAAAADVuOvKzTF-3RD6j-qFPqhubBQ.png"
+                <img src="{{ url_for('static', filename='images/ad.png') }}"
                     alt="" class="card-image">
             </div>
             <footer class="right-col mt-3">
@@ -494,3 +504,36 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+    /**
+     * Like function for updating class names of i and span tags without refreshing webpage
+     *
+     * @param {number} postId - The ID of the post to be liked.
+     */
+    function like(postId) {
+        // Get the necessary elements for updating the like status
+        const likeCount = document.getElementById(`likes-count-${postId}`);
+        const likeButton = document.getElementById(`like-button-${postId}`);
+        const likeSpan = document.getElementById(`like-span-${postId}`);
+
+        // Send a POST request to the server to like the post
+        fetch(`/like_post/${postId}`, { method: "POST" })
+            .then((res) => res.json()) // Parse the response as JSON
+            .then((data) => {
+                // Updating the like count and visual styles class based on the response data
+                likeCount.innerHTML = data["likes"];
+                if (data["liked"] === true) {
+                    likeButton.className = "fas fa-thumbs-up fa-2xl fa-flip-horizontal text-primary";
+                    likeSpan.className = "text-primary"
+                } else {
+                    likeButton.className = "far fa-thumbs-up fa-2xl fa-flip-horizontal text-secondary";
+                    likeSpan.className = "text-secondary"
+                }
+            })
+            // Display an error message if the request fails
+            .catch((e) => alert("Could not like post."));
+    }
+</script>
+{% endblock script %}

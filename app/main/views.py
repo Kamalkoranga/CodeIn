@@ -1,8 +1,8 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, jsonify
 from . import main
 from flask_login import login_required, current_user
 from .forms import PostForm, EditProfileForm
-from ..models import Post, User
+from ..models import Post, User, Like
 from .. import db
 
 
@@ -55,3 +55,22 @@ def edit_profile():
     form.about_me.data = current_user.about_me
     form.username.data = current_user.username
     return render_template('edit_profile.html', form=form)
+
+
+@main.route('/like_post/<post_id>', methods=['POST'])
+@login_required
+def like_post(post_id):
+    post = Post.query.filter_by(id=int(post_id)).first()
+    like = Like.query.filter_by(author_id=current_user.id, post_id=post.id).first()
+
+    if not post:
+        return jsonify({'error': 'Post does not exist.'}, 400)
+    elif like:
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        like = Like(author_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+
+    return jsonify({"likes": len(post.likes), "liked": current_user.id in map(lambda x: x.author_id, post.likes)})

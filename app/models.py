@@ -22,7 +22,10 @@ class User(db.Model, UserMixin):
     avatar_hash = db.Column(db.String(32))
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic',
+                            passive_deletes=True)
+    likes = db.relationship('Like', backref='author', lazy='dynamic',
+                            passive_deletes=True)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -87,4 +90,18 @@ class Post(db.Model):
     post_name = db.Column(db.String(100))
     post_data = db.Column(LargeBinary)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id',
+                                                    ondelete='CASCADE'))
+    likes = db.relationship('Like', backref="post", passive_deletes=True)
+
+    def __repr__(self):
+        return f'<Post {self.body[:10]}...'
+
+
+class Like(db.Model):
+    __tablename__ = 'likes'
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete='CASCADE'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey(
+        'posts.id', ondelete='CASCADE'), nullable=False)
