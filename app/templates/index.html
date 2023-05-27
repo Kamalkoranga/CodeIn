@@ -115,8 +115,15 @@
         text-decoration: underline;
     }
 
-    .news-list a {
+    .news-list a, .recent-list a {
         border: 0;
+    }
+
+    .recent-list > .card-header {
+        background-color: #fff;
+        border: 0;
+        font-size: 12px;
+        font-weight: 500;
     }
 
     .news-header {
@@ -126,7 +133,7 @@
         background-color: #fff;
     }
 
-    .news-list a:hover {
+    .news-list a:hover, .recent-list a:hover {
         background-color: rgba(230, 227, 227, 0.801);
     }
 
@@ -184,44 +191,38 @@
                     </a></li>
             </ul>
         </div>
-        <div class="card my-3 sticky-top groups" style="top: 5em;">
+        <div class="card my-3 sticky-top groups recent-list" style="top: 5em;">
             <div class="card-header">
                 Recent
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
-                        <i class="fa-solid fa-people-group me-2"></i>
-                        Python Developer Comm...
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
-                        <i class="fa-solid fa-people-group me-2"></i>
-                        HackerRank Intreview Produ...
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
-                        <i class="fa-solid fa-people-group me-2"></i>
-                        SQL Server Business Intellig...
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
-                        <i class="fa-solid fa-people-group me-2"></i>
-                        Django
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" class="text-secondary link-underline link-underline-opacity-0">
-                        <i class="fa-solid fa-people-group me-2"></i>
-                        Flask
-                    </a>
-                </li>
+            <ul class="list-group list-group-flush border-0 mb-4">
+                <a href="#" class="text-secondary list-group-item list-group-item-action">
+                    <i class="fa-solid fa-people-group me-2"></i>
+                    <span>Python Developer Comm...</span>
+                </a>
+
+                <a href="#" class="text-secondary list-group-item list-group-item-action">
+                    <i class="fa-solid fa-people-group me-2"></i>
+                    <span>HackerRank Intreview Produ...</span>
+                </a>
+
+                <a href="#" class="text-secondary list-group-item list-group-item-action">
+                    <i class="fa-solid fa-people-group me-2"></i>
+                    <span>SQL Server Business Intellig...</span>
+                </a>
+
+                <a href="#" class="text-secondary list-group-item list-group-item-action">
+                    <i class="fa-solid fa-people-group me-2"></i>
+                    <span>Django</span>
+                </a>
+
+                <a href="#" class="text-secondary list-group-item list-group-item-action">
+                    <i class="fa-solid fa-people-group me-2"></i>
+                    <span>Flask</span>
+                </a>
             </ul>
 
-            <div class="card-header text-primary">Groups</div>
+            <div class="card-header text-primary fw-bold">Groups</div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <a href="#" class="text-secondary link-underline link-underline-opacity-0">
@@ -367,7 +368,7 @@
             <div class="card-header news-header">
                 LinkedIn News
             </div>
-            <ul class="news-list list-group list-group-flush list-group-circled">
+            <ul class="news-list list-group list-group-flush">
                 <a href="#" class="py-2 list-group-item list-group-item-action d-flex gap-2">
                     <i class="fa-regular fa-circle fa-2xs py-1 mt-2"></i>
                     <div>
