@@ -1,30 +1,99 @@
 {% extends "base.html" %}
-{% block title %}{{ user.username }} | CodeIn{% endblock %}
+{% block title %}{{ user.name }} | CodeIn{% endblock %}
+{% block style %}
+<style>
+    .first-col {
+        width: 72%;
+    }
+
+    .profile-top__image {
+        border-radius: 50%;
+        border: 5px solid #fff;
+        width: 11em;
+        top: 100px;
+        left: 2em;
+    }
+
+    .profile-top .headline {
+        font-size: 16px;
+    }
+
+    .profile-top a {
+        text-decoration: none;
+    }
+
+    .profile-top a:hover {
+        text-decoration: underline;
+    }
+
+    .profile-top .btn-outline-primary:hover {
+        box-shadow: inset 0 0 0 2px #0a58ca !important;
+        background-color: #dae6f9cd;
+        color: #0a58ca;
+    }
+
+    .profile-top .btn-outline-secondary:hover {
+        box-shadow: inset 0 0 0 2px #6c757d !important;
+        background-color: #e8e8e8cf;
+        color: #6c757d;
+    }
+</style>
+{% endblock style %}
 {% block content %}
-<div class="page-header">
-    <h1>{{ user.username }}</h1>
-    {% if user.name or user.location %}
-    <p>
-        {% if user.name %}{{ user.name }}{% endif %}
-        {% if user.location %}
-        From <a href="http://maps.google.com/?q={{ user.location }}">
-            {{ user.location }}
-        </a>
-        {% endif %}
-    </p>
-    {% endif %}
-    {% if current_user.username == user.username %}
-    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-    {% endif %}
-    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-    <p>
-        Member since {{ moment(user.member_since).format('L') }}.
-        Last seen {{ moment(user.last_seen).fromNow() }}.
-    </p>
-    {% if user == current_user %}
-    <a class="btn btn-primary" href="{{ url_for('.edit_profile') }}">
-        Edit Profile
-    </a>
-    {% endif %}
+<div class="row">
+    <div class="col-9 first-col">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">Analytics & tools</h5>
+                <p class="card-text">Post impressions past 7 days <strong>35</strong> <span class="text-danger">76.1%</span></p>
+            </div>
+        </div>
+
+        <div class="card profile-top">
+            <img src="{{url_for('static', filename='images/card-bg.svg')}}" alt="" class="position-relative mb-5">
+            <img src="{{user.gravatar(size=256)}}" alt="" class="position-absolute profile-top__image">
+            <div class="card-body mt-2 px-4">
+                <h2>{{ user.name }}<small class="text-secondary fs-6 fw-normal ms-2">(He/him)</small></h2>
+                <p class="card-text headline my-1">{{ user.about_me }}</p>
+                <p class="mb-2">
+                    <span class="card-text text-secondary">{{ user.location }}</span> • <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#contact-info">Contact info</a>
+                </p>
+                <p class="mb-2">
+                    <a href="#" class="text-primary fw-bold">72 followers</a> •
+                    <a href="#" class="text-primary fw-bold"> 70 connections</a>
+                </p>
+                <div class="d-flex align-items-center gap-3">
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold">Open to</button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">Add profile section</button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3 flex-fill">
+        <ul class="list-group">
+            <li class="list-group-item">Edit public profile & URL</li>
+            <li class="list-group-item">Add profile in another language</li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="contact-info" tabindex="-1" aria-labelledby="contact-info" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
