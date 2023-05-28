@@ -169,6 +169,12 @@
         color: gray;
         box-shadow: inset 0 0 0 1px gray !important;
     }
+
+    .comment__card {
+        background-color: #f2f2f2;
+        border: 0;
+        border-radius: 0 10px 10px;
+    }
 </style>
 {% endblock style %}
 
@@ -232,7 +238,7 @@
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
                     <i class="fa-solid fa-people-group me-2"></i>
-                    <span>HackerRank Intreview Produ...</span>
+                    <span>HackerRank Interview Produ...</span>
                 </a>
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
@@ -260,7 +266,7 @@
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
                     <i class="fa-solid fa-people-group me-2"></i>
-                    <span>HackerRank Intreview Produ...</span>
+                    <span>HackerRank Interview Produ...</span>
                 </a>
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
@@ -368,32 +374,77 @@
                         {{ post.likes|length }}
                     </span>
                 </span>
-                <span class="text-secondary comments">5 comments</span>
+                <span class="text-secondary comments">{{ post.comments|length }} comments</span>
             </div>
             <div class="icons d-flex justify-content-around p-1 border-top align-items-center">
                 <!--
                     Here we checked if the current user has liked the post or not 
                 -->
                 {% if current_user.id in post.likes|map(attribute="author_id")|list %}
-                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}})">
+                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}});open_comments({{post.id}})">
                     <i class="fas fa-thumbs-up fa-flip-horizontal fa-xl" id="like-button-{{post.id}}">
                     </i>&nbsp; Like
                 </span>
                 {% else %}
-                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }})">
+                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }});open_comments({{post.id}})">
                     <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
                 </span>
                 {% endif %}
 
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
-                    Comment</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
-                    Send</span>
+                <span class="text-secondary" onclick="open_comments({{post.id}})">
+                    <i class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
+                    Comment
+                </span>
+                <span class="text-secondary">
+                    <i class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
+                    Repost
+                </span>
+                <span class="text-secondary">
+                    <i class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
+                    Send
+                </span>
+            </div>
+            <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-none" id="comment-section-{{post.id}}">
+                <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
+                <div class="flex-fill">
+                    <div class="mb-3">
+                        <textarea onclick="open_post_btn({{post.id}})" class="form-control rounded-pill py-3" id="comment-textarea-{{post.id}}" name="body" rows="1" placeholder="Add a comment..."></textarea>
+                    </div>
+                    <span onclick="add_comment({{post.id}})" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post-{{post.id}}" style="display: none;">Post</span>
+                </div>
+            </div>
+            <div class="all-comments d-none" id="all-comment-{{post.id}}">
+                {% if post.comments %}
+                    {% for comment in post.comments|reverse %} {# reverse the comments list #}
+                    <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
+                        <img src="{{comment.author.gravatar(size=256)}}" alt="" class="profile">
+                        <div class="card comment__card">
+                            <div class="card-body">
+                                <a
+                                    class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                                    href="{{url_for('main.user', username=comment.author.username)}}">
+                                    <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                                    <div class="d-flex flex-column post-top">
+                                        <span class="text-secondary fs-6">
+                                            <strong>{{ comment.author.name }}</strong> • 3rd+
+                                        </span>
+                                        {% if comment.author.about_me %}
+                                        <p class="text-secondary m-0">
+                                            {{ comment.author.about_me[:70] }}
+                                            {% if comment.author.about_me|length > 70 %}...{% endif %}
+                                        </p>
+                                        {% endif %}
+                                        <p class="text-secondary m-0">
+                                            {{ moment(comment.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i>
+                                        </p>
+                                    </div>
+                                </a>
+                                <p class="comment__text m-0">{{ comment.body }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -457,17 +508,14 @@
                     </li>
                     <li><a class="link-secondary" href="">Ad Choices</a></li>
                     <li><a class="link-secondary" href="">Advertising</a></li>
-                    <li><a class="link-secondary" href="">Business Services</a>
-                    </li>
-                    <li><a class="link-secondary" href="">Get the LinkedIn
-                            app</a>
-                    </li>
+                    <li><a class="link-secondary" href="">Business Services</a></li>
+                    <li><a class="link-secondary" href="">Get the LinkedIn app</a></li>
                     <li><a class="link-secondary" href="">More</a></li>
                 </ul>
                 <div class="mb-5">
-                    <p class="text-center"><img
-                            src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png"
-                            alt="" width="50px"> LinkedIn Corporation © 2023</p>
+                    <p class="text-center">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png" alt="" width="50px"> LinkedIn Corporation © 2023
+                    </p>
                 </div>
             </footer>
         </div>
@@ -539,6 +587,111 @@
             })
             // Display an error message if the request fails
             .catch((e) => alert("Could not like post."));
+    }
+
+
+    function open_comments(post_id) {
+        /*
+         * This function is responsible for opening comment-section and all-comment section
+         * when a user clicked like button or comment button as same as linkedin :)
+        */
+        const comment_section = document.querySelector(`#comment-section-${post_id}`);
+        const all_comment = document.querySelector(`#all-comment-${post_id}`);
+        comment_section.className = "comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-block";
+        all_comment.className = "all-comments d-block";
+    }
+
+
+    
+    function open_post_btn(post_id) {
+        /*
+         * This function is used for automatically opening and closing post button when
+         * user inputs any value in form.
+        */
+        const comment_textarea = document.querySelector(`#comment-textarea-${post_id}`);
+        const comment_post = document.querySelector(`#comment-post-${post_id}`);
+        
+        comment_textarea.addEventListener("input", function() {
+            if (comment_textarea.value !== "") {
+                comment_post.style.display = "inline";
+            } else {
+                comment_post.style.display = "none";
+            }
+        });
+
+    }
+
+
+    function add_comment(post_id) {
+        /*
+         * This functions is the most important function for appending comment in all-comments section and then sends
+         * comment data to server using POST request
+        */
+
+        const comment = document.querySelector(`#comment-textarea-${post_id}`).value;
+        const all_comment = document.querySelector(`#all-comment-${post_id}`);
+        const comment_div = document.createElement('div');
+        const comment_img = `<img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">`;
+        const comment_div2 = document.createElement('div');
+        const card_body = `
+        <div class="card-body">
+            <a
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                href="{{url_for('main.user', username=current_user.username)}}">
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column post-top">
+                    <span class="text-secondary fs-6">
+                        <strong>{{ current_user.name }}</strong> • 3rd+
+                    </span>
+                    {% if current_user.about_me %}
+                    <p class="text-secondary m-0">{{
+                        current_user.about_me[:70] }}{% if
+                        current_user.about_me|length > 70 %}...{% endif %}
+                    </p>
+                    {% endif %}
+                    <p class="text-secondary m-0">
+                        1d • <i class="fa-solid fa-earth-asia"></i>
+                    </p>
+                </div>
+            </a>
+            <p class="comment__text m-0">${comment}</p>
+        </div>
+        `
+
+        comment_div.className = "comment d-flex gap-2 align-items-start mx-3 mb-3";
+        comment_div2.className = "card comment__card";
+
+        comment_div2.innerHTML = card_body;
+        comment_div.innerHTML = comment_img;
+        comment_div.appendChild(comment_div2);
+        all_comment.prepend(comment_div);
+
+        add_comment_to_db(comment, post_id)
+    }
+
+    async function add_comment_to_db(comment, post_id) {
+        try {
+            const data = {
+                body: comment,
+                post_id: post_id,
+            };
+            const response = await fetch(`/add_comment/${post_id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                document.querySelector(`#comment-textarea-${post_id}`).value = "";
+                console.log(responseData);
+            } else {
+                throw new Error('Request failed.');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 </script>
 {% endblock script %}

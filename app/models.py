@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 from itsdangerous import URLSafeTimedSerializer as Serializer
-from flask import current_app, request
+from flask import current_app
 from datetime import datetime
 from sqlalchemy import LargeBinary
 import hashlib
@@ -22,10 +22,12 @@ class User(db.Model, UserMixin):
     avatar_hash = db.Column(db.String(32))
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-    posts = db.relationship('Post', backref='author', lazy='dynamic',
-                            passive_deletes=True)
-    likes = db.relationship('Like', backref='author', lazy='dynamic',
-                            passive_deletes=True)
+    posts = db.relationship(
+        'Post', backref='author', lazy='dynamic', passive_deletes=True)
+    comments = db.relationship(
+        'Comment', backref='author', lazy='dynamic', passive_deletes=True)
+    likes = db.relationship(
+        'Like', backref='author', lazy='dynamic', passive_deletes=True)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -92,10 +94,26 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id',
                                                     ondelete='CASCADE'))
+    comments = db.relationship('Comment', backref="post", passive_deletes=True)
     likes = db.relationship('Like', backref="post", passive_deletes=True)
 
     def __repr__(self):
         return f'<Post {self.body[:10]}...'
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False
+    )
+    post_id = db.Column(
+        db.Integer,
+        db.ForeignKey('posts.id', ondelete='CASCADE'), nullable=False
+    )
 
 
 class Like(db.Model):
