@@ -232,7 +232,7 @@
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
                     <i class="fa-solid fa-people-group me-2"></i>
-                    <span>HackerRank Intreview Produ...</span>
+                    <span>HackerRank Interview Produ...</span>
                 </a>
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
@@ -260,7 +260,7 @@
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
                     <i class="fa-solid fa-people-group me-2"></i>
-                    <span>HackerRank Intreview Produ...</span>
+                    <span>HackerRank Interview Produ...</span>
                 </a>
 
                 <a href="#" class="text-secondary list-group-item list-group-item-action">
@@ -394,6 +394,15 @@
                 <span class="text-secondary"><i
                         class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
                     Send</span>
+            </div>
+            <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3">
+                <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
+                <form action="" class="flex-fill">
+                    <div class="mb-3">
+                        <textarea class="form-control rounded-pill py-3" id="comment-textarea" rows="1" placeholder="Add a comment..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</button>
+                </form>
             </div>
         </div>
         {% endfor %}
@@ -540,5 +549,16 @@
             // Display an error message if the request fails
             .catch((e) => alert("Could not like post."));
     }
+
+    const comment_textarea = document.querySelector('#comment-textarea');
+    const comment_post = document.querySelector('#comment-post');
+    
+    comment_textarea.addEventListener("input", function() {
+        if (comment_textarea.value !== "") {
+            comment_post.style.display = "inline";
+        } else {
+            comment_post.style.display = "none";
+        }
+    });
 </script>
 {% endblock script %}
