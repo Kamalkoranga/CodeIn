@@ -35,11 +35,15 @@ def index():
 
     # Retrieve all posts from the database in descending order of timestamp
     posts = Post.query.order_by(Post.timestamp.desc()).all()
+
+    # Retrieve all comments from the database
     comments = Comment.query.all()
 
-    '''Render the 'index.html' template, passing the form and posts to the
-    template'''
-    return render_template('index.html', form=form, posts=posts, comments=comments)
+    '''Render the 'index.html' template, passing the form, posts and comments
+    to the template'''
+    return render_template(
+        'index.html', form=form, posts=posts, comments=comments
+    )
 
 
 @main.route("/image/<int:id>")
@@ -138,15 +142,26 @@ def like_post(post_id):
 @main.route('/add_comment/<post_id>', methods=['POST'])
 @login_required
 def add_comment(post_id):
+    # Retrieve the post object based on the provided post_id
     post = Post.query.filter_by(id=int(post_id)).first()
+
+    # Check if the post exists
     if not post:
         return jsonify({'error': 'post not found'})
+
+    # Get the JSON data from the request
     data = request.get_json()
+
+    # Create a new Comment object with the provided data
     comment = Comment(
         body=data['body'],
         author=current_user._get_current_object(),
         post_id=data['post_id']
     )
+
+    # Add the comment to the database session
     db.session.add(comment)
     db.session.commit()
+
+    # Return a JSON response indicating successful addition of the comment
     return jsonify({'msg': 'added'})

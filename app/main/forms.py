@@ -45,3 +45,6 @@ class EditProfileForm(FlaskForm):
         # Custom validation for the username field
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
+
+# Form for posting comment is done using html

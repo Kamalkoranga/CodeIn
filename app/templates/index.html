@@ -395,12 +395,14 @@
                     <i class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
                     Comment
                 </span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
-                    Repost</span>
-                <span class="text-secondary"><i
-                        class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
-                    Send</span>
+                <span class="text-secondary">
+                    <i class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
+                    Repost
+                </span>
+                <span class="text-secondary">
+                    <i class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
+                    Send
+                </span>
             </div>
             <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-none" id="comment-section-{{post.id}}">
                 <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
@@ -413,7 +415,7 @@
             </div>
             <div class="all-comments d-none" id="all-comment-{{post.id}}">
                 {% if post.comments %}
-                    {% for comment in post.comments|reverse %}
+                    {% for comment in post.comments|reverse %} {# reverse the comments list #}
                     <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
                         <img src="{{comment.author.gravatar(size=256)}}" alt="" class="profile">
                         <div class="card comment__card">
@@ -421,21 +423,20 @@
                                 <a
                                     class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
                                     href="{{url_for('main.user', username=comment.author.username)}}">
-                                    <i
-                                        class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                                    <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
                                     <div class="d-flex flex-column post-top">
                                         <span class="text-secondary fs-6">
                                             <strong>{{ comment.author.name }}</strong> • 3rd+
                                         </span>
                                         {% if comment.author.about_me %}
-                                        <p class="text-secondary m-0">{{
-                                            comment.author.about_me[:70] }}{% if
-                                            comment.author.about_me|length > 70 %}...{% endif %}
+                                        <p class="text-secondary m-0">
+                                            {{ comment.author.about_me[:70] }}
+                                            {% if comment.author.about_me|length > 70 %}...{% endif %}
                                         </p>
                                         {% endif %}
-                                        <p class="text-secondary m-0">{{
-                                            moment(comment.timestamp).fromNow() }} • <i
-                                                class="fa-solid fa-earth-asia"></i></p>
+                                        <p class="text-secondary m-0">
+                                            {{ moment(comment.timestamp).fromNow() }} • <i class="fa-solid fa-earth-asia"></i>
+                                        </p>
                                     </div>
                                 </a>
                                 <p class="comment__text m-0">{{ comment.body }}</p>
@@ -507,17 +508,14 @@
                     </li>
                     <li><a class="link-secondary" href="">Ad Choices</a></li>
                     <li><a class="link-secondary" href="">Advertising</a></li>
-                    <li><a class="link-secondary" href="">Business Services</a>
-                    </li>
-                    <li><a class="link-secondary" href="">Get the LinkedIn
-                            app</a>
-                    </li>
+                    <li><a class="link-secondary" href="">Business Services</a></li>
+                    <li><a class="link-secondary" href="">Get the LinkedIn app</a></li>
                     <li><a class="link-secondary" href="">More</a></li>
                 </ul>
                 <div class="mb-5">
-                    <p class="text-center"><img
-                            src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png"
-                            alt="" width="50px"> LinkedIn Corporation © 2023</p>
+                    <p class="text-center">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png" alt="" width="50px"> LinkedIn Corporation © 2023
+                    </p>
                 </div>
             </footer>
         </div>
@@ -593,6 +591,10 @@
 
 
     function open_comments(post_id) {
+        /*
+         * This function is responsible for opening comment-section and all-comment section
+         * when a user clicked like button or comment button as same as linkedin :)
+        */
         const comment_section = document.querySelector(`#comment-section-${post_id}`);
         const all_comment = document.querySelector(`#all-comment-${post_id}`);
         comment_section.className = "comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-block";
@@ -602,6 +604,10 @@
 
     
     function open_post_btn(post_id) {
+        /*
+         * This function is used for automatically opening and closing post button when
+         * user inputs any value in form.
+        */
         const comment_textarea = document.querySelector(`#comment-textarea-${post_id}`);
         const comment_post = document.querySelector(`#comment-post-${post_id}`);
         
@@ -617,10 +623,12 @@
 
 
     function add_comment(post_id) {
+        /*
+         * This functions is the most important function for appending comment in all-comments section and then sends
+         * comment data to server using POST request
+        */
+
         const comment = document.querySelector(`#comment-textarea-${post_id}`).value;
-        //const username = document.querySelector('#comment-username').value;
-        const username = "kamal";
-        
         const all_comment = document.querySelector(`#all-comment-${post_id}`);
         const comment_div = document.createElement('div');
         const comment_img = `<img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">`;
