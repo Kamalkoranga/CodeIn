@@ -374,7 +374,7 @@
                         {{ post.likes|length }}
                     </span>
                 </span>
-                <span class="text-secondary comments">5 comments</span>
+                <span class="text-secondary comments">{{ post.comments|length }} comments</span>
             </div>
             <div class="icons d-flex justify-content-around p-1 border-top align-items-center">
                 <!--
@@ -406,9 +406,9 @@
                 <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
                 <div class="flex-fill">
                     <div class="mb-3">
-                        <textarea class="form-control rounded-pill py-3" id="comment-textarea" rows="1" placeholder="Add a comment..."></textarea>
+                        <textarea onclick="open_post_btn({{post.id}})" class="form-control rounded-pill py-3" id="comment-textarea-{{post.id}}" name="body" rows="1" placeholder="Add a comment..."></textarea>
                     </div>
-                    <span onclick="add_comment({{post.id}})" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</span>
+                    <span onclick="add_comment({{post.id}})" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post-{{post.id}}" style="display: none;">Post</span>
                 </div>
             </div>
             <div class="all-comments d-none" id="all-comment-{{post.id}}">
@@ -596,20 +596,24 @@
     }
 
 
-    const comment_textarea = document.querySelector('#comment-textarea');
-    const comment_post = document.querySelector('#comment-post');
     
-    comment_textarea.addEventListener("input", function() {
-        if (comment_textarea.value !== "") {
-            comment_post.style.display = "inline";
-        } else {
-            comment_post.style.display = "none";
-        }
-    });
+    function open_post_btn(post_id) {
+        const comment_textarea = document.querySelector(`#comment-textarea-${post_id}`);
+        const comment_post = document.querySelector(`#comment-post-${post_id}`);
+        
+        comment_textarea.addEventListener("input", function() {
+            if (comment_textarea.value !== "") {
+                comment_post.style.display = "inline";
+            } else {
+                comment_post.style.display = "none";
+            }
+        });
+
+    }
 
 
     function add_comment(post_id) {
-        const comment = document.querySelector('#comment-textarea').value;
+        const comment = document.querySelector(`#comment-textarea-${post_id}`).value;
         //const username = document.querySelector('#comment-username').value;
         const username = "kamal";
         
@@ -653,6 +657,33 @@
         comment_div.appendChild(comment_img);
         comment_div.appendChild(comment_div2);
         all_comment.prepend(comment_div);
+
+        add_comment_to_db(comment, post_id)
+    }
+
+    async function add_comment_to_db(comment, post_id) {
+        try {
+            const data = {
+                body: comment,
+                post_id: post_id,
+            };
+            const response = await fetch(`/add_comment/${post_id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                document.querySelector(`#comment-textarea-${post_id}`).value = "";
+                console.log(responseData);
+            } else {
+                throw new Error('Request failed.');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 </script>
 {% endblock script %}

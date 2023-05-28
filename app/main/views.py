@@ -1,8 +1,8 @@
-from flask import render_template, flash, redirect, url_for, jsonify
+from flask import render_template, flash, redirect, url_for, jsonify, request
 from . import main
 from flask_login import login_required, current_user
 from .forms import PostForm, EditProfileForm
-from ..models import Post, User, Like
+from ..models import Post, User, Like, Comment
 from .. import db
 
 
@@ -35,10 +35,11 @@ def index():
 
     # Retrieve all posts from the database in descending order of timestamp
     posts = Post.query.order_by(Post.timestamp.desc()).all()
+    comments = Comment.query.order_by(Comment.timestamp.desc()).all()
 
     '''Render the 'index.html' template, passing the form and posts to the
     template'''
-    return render_template('index.html', form=form, posts=posts)
+    return render_template('index.html', form=form, posts=posts, comments=comments)
 
 
 @main.route("/image/<int:id>")
@@ -132,3 +133,20 @@ def like_post(post_id):
         "liked": current_user.id in map(lambda x: x.author_id, post.likes)
     }
     return jsonify(res)
+
+
+@main.route('/add_comment/<post_id>', methods=['POST'])
+@login_required
+def add_comment(post_id):
+    post = Post.query.filter_by(id=int(post_id)).first()
+    if not post:
+        return jsonify({'error': 'post not found'})
+    data = request.get_json()
+    comment = Comment(
+        body=data['body'],
+        author=current_user._get_current_object(),
+        post_id=data['post_id']
+    )
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify({'msg': 'added'})
