@@ -408,7 +408,7 @@
                     <div class="mb-3">
                         <textarea class="form-control rounded-pill py-3" id="comment-textarea" rows="1" placeholder="Add a comment..."></textarea>
                     </div>
-                    <span onclick="add_comment()" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</span>
+                    <span onclick="add_comment({{post.id}})" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</span>
                 </div>
             </div>
             <div class="all-comments d-none" id="all-comment-{{post.id}}">
@@ -607,8 +607,52 @@
         }
     });
 
-    function add_comment() {
+
+    function add_comment(post_id) {
+        const comment = document.querySelector('#comment-textarea').value;
+        //const username = document.querySelector('#comment-username').value;
+        const username = "kamal";
         
+        const all_comment = document.querySelector(`#all-comment-${post_id}`);
+        const comment_div = document.createElement('div');
+        const comment_img = document.createElement('img');
+        const comment_div2 = document.createElement('div');
+        const card_body = `
+        <div class="card-body">
+            <a
+                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                href="{{url_for('main.user', username=current_user.username)}}">
+                <i
+                    class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <div class="d-flex flex-column post-top">
+                    <span class="text-secondary fs-6">
+                        <strong>{{ current_user.name }}</strong> • 3rd+
+                    </span>
+                    {% if current_user.about_me %}
+                    <p class="text-secondary m-0">{{
+                        current_user.about_me[:70] }}{% if
+                        current_user.about_me|length > 70 %}...{% endif %}
+                    </p>
+                    {% endif %}
+                    <p class="text-secondary m-0">1d • <i
+                            class="fa-solid fa-earth-asia"></i></p>
+                </div>
+            </a>
+            <p class="comment__text m-0">${comment}</p>
+        </div>
+        `
+
+        comment_div.className = "comment d-flex gap-2 align-items-start mx-3 mb-3";
+
+        comment_img.src = "{{current_user.gravatar(size=256)}}";
+        comment_img.className = "profile";
+
+        comment_div2.className = "card comment__card";
+
+        comment_div2.innerHTML = card_body;
+        comment_div.appendChild(comment_img);
+        comment_div.appendChild(comment_div2);
+        all_comment.prepend(comment_div);
     }
 </script>
 {% endblock script %}
