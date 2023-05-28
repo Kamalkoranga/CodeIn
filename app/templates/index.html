@@ -169,6 +169,12 @@
         color: gray;
         box-shadow: inset 0 0 0 1px gray !important;
     }
+
+    .comment__card {
+        background-color: #f2f2f2;
+        border: 0;
+        border-radius: 0 10px 10px;
+    }
 </style>
 {% endblock style %}
 
@@ -397,12 +403,42 @@
             </div>
             <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3">
                 <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
-                <form action="" class="flex-fill">
+                <div class="flex-fill">
                     <div class="mb-3">
                         <textarea class="form-control rounded-pill py-3" id="comment-textarea" rows="1" placeholder="Add a comment..."></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</button>
-                </form>
+                    <span onclick="add_comment()" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</span>
+                </div>
+            </div>
+            <div class="all-comments">
+                <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
+                    <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">
+                    <div class="card comment__card">
+                        <div class="card-body">
+                            <a
+                                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                                href="{{url_for('main.user', username=post.author.username)}}">
+                                <i
+                                    class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                                <div class="d-flex flex-column post-top">
+                                    <span class="text-secondary fs-6">
+                                        <strong>{{ post.author.name }}</strong> • 3rd+
+                                    </span>
+                                    {% if post.author.about_me %}
+                                    <p class="text-secondary m-0">{{
+                                        post.author.about_me[:70] }}{% if
+                                        post.author.about_me|length > 70 %}...{% endif %}
+                                    </p>
+                                    {% endif %}
+                                    <p class="text-secondary m-0">{{
+                                        moment(post.timestamp).fromNow() }} • <i
+                                            class="fa-solid fa-earth-asia"></i></p>
+                                </div>
+                            </a>
+                            <p class="comment__text m-0">Foi realmente inesquecível, Mih!!</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -560,5 +596,9 @@
             comment_post.style.display = "none";
         }
     });
+
+    function add_comment() {
+        
+    }
 </script>
 {% endblock script %}
