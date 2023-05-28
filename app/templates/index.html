@@ -381,19 +381,20 @@
                     Here we checked if the current user has liked the post or not 
                 -->
                 {% if current_user.id in post.likes|map(attribute="author_id")|list %}
-                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}})">
+                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}});open_comments({{post.id}})">
                     <i class="fas fa-thumbs-up fa-flip-horizontal fa-xl" id="like-button-{{post.id}}">
                     </i>&nbsp; Like
                 </span>
                 {% else %}
-                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }})">
+                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }});open_comments({{post.id}})">
                     <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
                 </span>
                 {% endif %}
 
-                <span class="text-secondary"><i
-                        class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
-                    Comment</span>
+                <span class="text-secondary" onclick="open_comments({{post.id}})">
+                    <i class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
+                    Comment
+                </span>
                 <span class="text-secondary"><i
                         class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
                     Repost</span>
@@ -401,7 +402,7 @@
                         class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
                     Send</span>
             </div>
-            <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3">
+            <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-none" id="comment-section-{{post.id}}">
                 <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile mt-1">
                 <div class="flex-fill">
                     <div class="mb-3">
@@ -410,7 +411,7 @@
                     <span onclick="add_comment()" type="submit" class="btn btn-primary mb-3 rounded-pill fw-bold" id="comment-post" style="display: none;">Post</span>
                 </div>
             </div>
-            <div class="all-comments">
+            <div class="all-comments d-none" id="all-comment-{{post.id}}">
                 <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
                     <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">
                     <div class="card comment__card">
@@ -585,6 +586,15 @@
             // Display an error message if the request fails
             .catch((e) => alert("Could not like post."));
     }
+
+
+    function open_comments(post_id) {
+        const comment_section = document.querySelector(`#comment-section-${post_id}`);
+        const all_comment = document.querySelector(`#all-comment-${post_id}`);
+        comment_section.className = "comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-block";
+        all_comment.className = "all-comments d-block";
+    }
+
 
     const comment_textarea = document.querySelector('#comment-textarea');
     const comment_post = document.querySelector('#comment-post');
