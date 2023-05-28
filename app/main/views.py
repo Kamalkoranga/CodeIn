@@ -35,7 +35,7 @@ def index():
 
     # Retrieve all posts from the database in descending order of timestamp
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    comments = Comment.query.order_by(Comment.timestamp.desc()).all()
+    comments = Comment.query.all()
 
     '''Render the 'index.html' template, passing the form and posts to the
     template'''

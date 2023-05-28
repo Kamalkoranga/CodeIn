@@ -412,34 +412,38 @@
                 </div>
             </div>
             <div class="all-comments d-none" id="all-comment-{{post.id}}">
-                <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
-                    <img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">
-                    <div class="card comment__card">
-                        <div class="card-body">
-                            <a
-                                class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
-                                href="{{url_for('main.user', username=post.author.username)}}">
-                                <i
-                                    class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
-                                <div class="d-flex flex-column post-top">
-                                    <span class="text-secondary fs-6">
-                                        <strong>{{ post.author.name }}</strong> • 3rd+
-                                    </span>
-                                    {% if post.author.about_me %}
-                                    <p class="text-secondary m-0">{{
-                                        post.author.about_me[:70] }}{% if
-                                        post.author.about_me|length > 70 %}...{% endif %}
-                                    </p>
-                                    {% endif %}
-                                    <p class="text-secondary m-0">{{
-                                        moment(post.timestamp).fromNow() }} • <i
-                                            class="fa-solid fa-earth-asia"></i></p>
-                                </div>
-                            </a>
-                            <p class="comment__text m-0">Foi realmente inesquecível, Mih!!</p>
+                {% if post.comments %}
+                    {% for comment in post.comments|reverse %}
+                    <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
+                        <img src="{{comment.author.gravatar(size=256)}}" alt="" class="profile">
+                        <div class="card comment__card">
+                            <div class="card-body">
+                                <a
+                                    class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
+                                    href="{{url_for('main.user', username=comment.author.username)}}">
+                                    <i
+                                        class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                                    <div class="d-flex flex-column post-top">
+                                        <span class="text-secondary fs-6">
+                                            <strong>{{ comment.author.name }}</strong> • 3rd+
+                                        </span>
+                                        {% if comment.author.about_me %}
+                                        <p class="text-secondary m-0">{{
+                                            comment.author.about_me[:70] }}{% if
+                                            comment.author.about_me|length > 70 %}...{% endif %}
+                                        </p>
+                                        {% endif %}
+                                        <p class="text-secondary m-0">{{
+                                            moment(comment.timestamp).fromNow() }} • <i
+                                                class="fa-solid fa-earth-asia"></i></p>
+                                    </div>
+                                </a>
+                                <p class="comment__text m-0">{{ comment.body }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -619,15 +623,14 @@
         
         const all_comment = document.querySelector(`#all-comment-${post_id}`);
         const comment_div = document.createElement('div');
-        const comment_img = document.createElement('img');
+        const comment_img = `<img src="{{current_user.gravatar(size=256)}}" alt="" class="profile">`;
         const comment_div2 = document.createElement('div');
         const card_body = `
         <div class="card-body">
             <a
                 class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
                 href="{{url_for('main.user', username=current_user.username)}}">
-                <i
-                    class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
+                <i class="fa-solid fa-ellipsis position-absolute top-0 end-0 post-menu"></i>
                 <div class="d-flex flex-column post-top">
                     <span class="text-secondary fs-6">
                         <strong>{{ current_user.name }}</strong> • 3rd+
@@ -638,8 +641,9 @@
                         current_user.about_me|length > 70 %}...{% endif %}
                     </p>
                     {% endif %}
-                    <p class="text-secondary m-0">1d • <i
-                            class="fa-solid fa-earth-asia"></i></p>
+                    <p class="text-secondary m-0">
+                        1d • <i class="fa-solid fa-earth-asia"></i>
+                    </p>
                 </div>
             </a>
             <p class="comment__text m-0">${comment}</p>
@@ -647,14 +651,10 @@
         `
 
         comment_div.className = "comment d-flex gap-2 align-items-start mx-3 mb-3";
-
-        comment_img.src = "{{current_user.gravatar(size=256)}}";
-        comment_img.className = "profile";
-
         comment_div2.className = "card comment__card";
 
         comment_div2.innerHTML = card_body;
-        comment_div.appendChild(comment_img);
+        comment_div.innerHTML = comment_img;
         comment_div.appendChild(comment_div2);
         all_comment.prepend(comment_div);
 
