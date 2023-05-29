@@ -18,11 +18,12 @@
         font-size: 16px;
     }
 
-    .profile-top a {
+    .profile-top a, .modal-body a {
         text-decoration: none;
     }
 
-    .profile-top a:hover {
+    .profile-top a:hover,
+    .modal-body a:hover {
         text-decoration: underline;
     }
 
@@ -37,20 +38,37 @@
         background-color: #e8e8e8cf;
         color: #6c757d;
     }
+
+    .modal-body p {
+        font-size: 16px;
+    }
+
+    .second-col .list-group a {
+        font-size: 16px;
+        justify-content: space-between;
+    }
+
+    .second-col .list-group a:hover {
+        text-decoration: underline;
+    }
 </style>
 {% endblock style %}
 {% block content %}
 <div class="row">
     <div class="col-9 first-col">
+        {% if current_user == user %}
         <div class="card mb-2">
             <div class="card-body">
-                <h5 class="card-title">Analytics & tools</h5>
-                <p class="card-text">Post impressions past 7 days <strong>35</strong> <span class="text-danger">76.1%</span></p>
+                <h5 class="card-title m-0">Analytics & tools</h5>
+                <small class="card-text text-secondary">
+                    Post impressions past 7 days <strong class="text-dark">36</strong><span class="text-danger ms-1 fw-bold"> <i class="fa-sharp fa-solid fa-caret-down"></i> 76.1%</span>
+                </small>
             </div>
         </div>
+        {% endif %}
 
-        <div class="card profile-top">
-            <img src="{{url_for('static', filename='images/card-bg.svg')}}" alt="" class="position-relative mb-5">
+        <div class="card profile-top mb-2">
+            <img src="{{url_for('static', filename='images/card-bg.svg')}}" alt="" class="position-relative mb-5 rounded-top">
             <img src="{{user.gravatar(size=256)}}" alt="" class="position-absolute profile-top__image">
             <div class="card-body mt-2 px-4">
                 <h2>{{ user.name }}<small class="text-secondary fs-6 fw-normal ms-2">(He/him)</small></h2>
@@ -58,24 +76,72 @@
                 <p class="mb-2">
                     <span class="card-text text-secondary">{{ user.location }}</span> • <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#contact-info">Contact info</a>
                 </p>
+
+                {% if current_user == user %}
                 <p class="mb-2">
                     <a href="#" class="text-primary fw-bold">72 followers</a> •
                     <a href="#" class="text-primary fw-bold"> 70 connections</a>
                 </p>
-                <div class="d-flex align-items-center gap-3">
+                {% else %}
+                <p class="mb-2 text-secondary">
+                    <span class="fw-bold">247</span> followers •
+                    <span class="fw-bold">231</span> connections
+                </p>
+                {% endif %}
+
+                {% if current_user == user %}
+                <div class="d-flex align-items-center gap-2">
                     <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold">Open to</button>
                     <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">Add profile section</button>
                     <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
                 </div>
+                {% else %}
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold">
+                        <i class="fa-solid fa-plus"></i> Follow
+                    </button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">
+                        <i class="fa-solid fa-lock"></i> Message
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
+                </div>
+                {% endif %}
             </div>
         </div>
+
+        {% if current_user == user %}
+        <div class="card mb-2 about">
+            <div class="card-body">
+                <h3 class="card-title">About</h3>
+                <p class="card-text">
+                    As a passionate coder and a student, I'm always seeking new challenges that allow me to learn and grow as a software developer. I thrive in dynamic environments where I can apply my technical skills to solve complex problems and build innovative solutions. <br> <br>
+
+                    My interest in coding began when I was in 11th grade. Since then, I've been constantly learning and experimenting with new technologies in order to broaden my skill set. I enjoy experimenting with various programming languages and tools, and I'm always eager to stay current with industry trends. <br><br>
+
+                    One of my favourite ways to put my coding skills to use and show off my creativity is to create projects. I've worked on a variety of projects in a variety of languages, which have taught me important lessons in project management, collaboration, and problem-solving. CodeHub is one of my personal favourites (codehub.gq). <br><br>
+
+                    I'm currently looking for new opportunities to hone my coding skills and work on meaningful projects. If you're looking for a motivated and dedicated software developer who enjoys learning and building, please connect with me. <br>
+                </p>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
-    <div class="col-3 flex-fill">
-        <ul class="list-group">
-            <li class="list-group-item">Edit public profile & URL</li>
-            <li class="list-group-item">Add profile in another language</li>
+    <div class="col-3 flex-fill second-col">
+        {% if current_user == user %}
+        <ul class="list-group mb-2">
+            <a href="{{url_for('main.edit_profile')}}" class="list-group-item text-secondary fw-bold py-4 d-flex gap-4" target="_blank">Edit public profile & URL <i class="fa-solid fa-circle-question"></i></a>
+            <a href="#" class="list-group-item text-secondary fw-bold py-4 d-flex gap-4">Add profile in another language <i class="fa-solid fa-circle-question"></i></a>
         </ul>
+        {% endif %}
+
+        <div class="card">
+            <img src="{{url_for('static', filename='images/ad.png')}}" alt="ad" class="rounded">
+        </div>
+
+        <div class="card">
+            <!-- other people suggestions -->
+        </div>
     </div>
 </div>
 
@@ -83,15 +149,17 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ user.name }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <h5>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-match text-secondary" width="24" height="24" focusable="false">
+                    <path d="M11.8 13l7.67-10H22L12 16l-4-4 1.41-1.41zm6.64-3.72a7 7 0 11-2.63-3.12L17 4.54a9.08 9.08 0 102.75 3z"></path></svg> Verified Account
+                </h5>
+                <p class="text-secondary">
+                    A phone number associated with this account has been verified. You can remove this verification at any time. Learn more about <a href="#" class="fw-bold">account verification</a>.
+                </p>
             </div>
         </div>
     </div>

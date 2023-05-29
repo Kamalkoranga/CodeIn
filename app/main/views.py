@@ -42,7 +42,8 @@ def index():
     '''Render the 'index.html' template, passing the form, posts and comments
     to the template'''
     return render_template(
-        'index.html', form=form, posts=posts, comments=comments
+        'index.html', form=form, posts=posts, comments=comments,
+        nav_color="black"
     )
 
 
@@ -69,7 +70,7 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
 
     # Render the 'user.html' template and pass the user object to the template
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, nav_color="rgba(0,0,0,0.6)")
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
