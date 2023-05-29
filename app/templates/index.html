@@ -70,9 +70,13 @@
         font-size: 17px !important;
     }
 
-    .left img {
+    .left .profile-img {
         width: 25%;
         border-radius: 50%;
+        top: 4em;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #fff;
     }
 
     .left span {
@@ -182,9 +186,9 @@
 <div class="row">
     <div class="col-xl-3 col-lg-3 col-md-4 left">
         <div class="card">
-            <img src="{{ current_user.gravatar(size=256) }}"
-                class="card-img-top mx-auto mt-4" alt="...">
-            <div class="card-body text-center">
+            <img src="{{url_for('static', filename='images/card-bg.svg')}}" alt="" class="position-relative mb-4 rounded-top">
+            <img src="{{current_user.gravatar(size=256)}}" alt="" class="position-absolute profile-img">
+            <div class="card-body text-center mt-1">
                 {% if not current_user.name %}
                 <a href="{{url_for('main.user', username=current_user.username)}}"
                     class="card-title link-underline link-underline-opacity-0 link-underline-opacity-100-hover">{{

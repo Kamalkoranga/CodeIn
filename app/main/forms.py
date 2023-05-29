@@ -3,6 +3,7 @@ from wtforms import SubmitField, TextAreaField, FileField, StringField
 from wtforms.validators import DataRequired, Length, Regexp
 from ..models import User
 from wtforms import ValidationError
+from flask_login import current_user
 
 
 class PostForm(FlaskForm):
@@ -43,8 +44,10 @@ class EditProfileForm(FlaskForm):
 
     def validate_username(self, field):
         # Custom validation for the username field
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username already in use.')
+        user = User.query.filter_by(username=field.data).first()
+        if user:
+            if current_user != user:
+                raise ValidationError('Username already in use.')
 
 
 # Form for posting comment is done using html

@@ -46,11 +46,10 @@
 
     .second-col .list-group a {
         font-size: 16px;
-        justify-content: space-between;
     }
 
     .second-col .list-group a:hover {
-        text-decoration: underline;
+        text-decoration: underline !important;
     }
 
     .other-users a:hover {
@@ -60,6 +59,12 @@
     .user-name:hover {
         text-decoration: underline !important;
         color: #0a58ca !important;
+    }
+
+    .custom-tooltip {
+        --bs-tooltip-bg: var(--bs-white);
+        --bs-tooltip-color: var(--bs-dark);
+        --bs-tooltip-font-size: 1em;
     }
 </style>
 {% endblock style %}
@@ -147,8 +152,18 @@
     <div class="col-3 flex-fill second-col mb-2">
         {% if current_user == user %}
         <ul class="list-group mb-2">
-            <a href="{{url_for('main.edit_profile')}}" class="list-group-item text-secondary fw-bold py-4 d-flex gap-4" target="_blank">Edit public profile & URL <i class="fa-solid fa-circle-question"></i></a>
-            <a href="#" class="list-group-item text-secondary fw-bold py-4 d-flex gap-4">Add profile in another language <i class="fa-solid fa-circle-question"></i></a>
+            <div class="d-flex gap-4 list-group-item fw-bold py-4 justify-content-between align-items-baseline">
+                <a href="{{url_for('main.edit_profile')}}" class="text-secondary text-decoration-none" target="_blank">
+                    Edit public profile & URL 
+                </a>
+                <i class="fa-solid fa-circle-question text-secondary fa-lg" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="See and edit how you look to people who are not signed in, and find you through search engines (ex: Google, Bing)." data-bs-placement="bottom"></i>
+            </div>
+            <div class="d-flex gap-4 list-group-item fw-bold py-4 justify-content-between align-items-baseline">
+                <a href="#" class="text-secondary text-decoration-none" target="_blank">
+                    Add profile in another language
+                </a>
+                <i class="fa-solid fa-circle-question text-secondary fa-lg" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Creating a profile in another language makes it easier for local business contacts and recruiters to find you on LinkedIn." data-bs-placement="bottom"></i>
+            </div>
         </ul>
         {% endif %}
 
@@ -290,5 +305,9 @@
             unfollow_user(username);
         }
     }
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      
 </script>
 {% endblock script %}
