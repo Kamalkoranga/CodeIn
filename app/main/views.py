@@ -166,3 +166,29 @@ def add_comment(post_id):
 
     # Return a JSON response indicating successful addition of the comment
     return jsonify({'msg': 'added'})
+
+
+@main.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return jsonify({'error': 'Invalid user.'})
+    if current_user.is_following(user):
+        return jsonify({'msg': 'You are already following this user.'})
+    current_user.follow(user)
+    db.session.commit()
+    return jsonify({'msg': 'following'})
+
+
+@main.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return jsonify({'error': 'Invalid user.'})
+    if not current_user.is_following(user):
+        return jsonify({'msg': 'You are not following this user.'})
+    current_user.unfollow(user)
+    db.session.commit()
+    return jsonify({'msg': 'You are not following this user anymore.'})

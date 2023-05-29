@@ -97,9 +97,16 @@
                 </div>
                 {% else %}
                 <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold">
+                    {% if not current_user.is_following(user) %}    
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold" id="follow" onclick="follow_unfollow('{{user.username}}')">
                         <i class="fa-solid fa-plus"></i> Follow
                     </button>
+                    {% else %}
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" id="unfollow" onclick="follow_unfollow('{{user.username}}')">
+                        <i class="fa-solid fa-check"></i> Following
+                    </button>
+                    {% endif %}
+
                     <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">
                         <i class="fa-solid fa-lock"></i> Message
                     </button>
@@ -202,5 +209,31 @@
 {% block script %}
 <script>
     document.querySelector('.window-location').innerHTML = window.location.host + window.location.pathname;
+
+    async function follow_user(username) {
+        console.log('followed');
+    }
+
+    async function unfollow_user(username) {
+        console.log('unfollowed');
+    }
+
+    function follow_unfollow(username) {
+        const follow_btn = document.querySelector('#follow');
+        const unfollow_btn = document.querySelector('#unfollow');
+
+        if (follow_btn) {
+            follow_btn.className = "btn btn-outline-primary rounded-pill px-3 fw-bold";
+            follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
+            follow_btn.id = "unfollow";
+            follow_user(username);
+
+        } else {
+            unfollow_btn.className = "btn btn-primary rounded-pill px-3 fw-bold";
+            unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
+            unfollow_btn.id = "follow";
+            unfollow_user(username);
+        }
+    }
 </script>
 {% endblock script %}
