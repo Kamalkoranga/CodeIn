@@ -53,11 +53,11 @@
         cursor: pointer;
     }
 
-    .comments {
+    .comments_p {
         cursor: pointer;
     }
 
-    .comments:hover {
+    .comments_p:hover {
         text-decoration: underline;
     }
 
@@ -374,7 +374,7 @@
                         {{ post.likes|length }}
                     </span>
                 </span>
-                <span class="text-secondary comments">{{ post.comments|length }} comments</span>
+                <p class="text-secondary m-0 comments_p"><span class="comments-{{post.id}}">{{ post.comments|length }}</span> comments</p>
             </div>
             <div class="icons d-flex justify-content-around p-1 border-top align-items-center">
                 <!--
@@ -685,6 +685,7 @@
             if (response.ok) {
                 const responseData = await response.json();
                 document.querySelector(`#comment-textarea-${post_id}`).value = "";
+                document.querySelector(`.comments-${post_id}`).innerHTML++;
                 console.log(responseData);
             } else {
                 throw new Error('Request failed.');
