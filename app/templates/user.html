@@ -52,8 +52,12 @@
         text-decoration: underline !important;
     }
 
-    .other-users a:hover {
+    .second-col .other-users a:hover {
         text-decoration: none !important;
+    }
+
+    .other-users button {
+        border: 2px solid #6c757d;
     }
 
     .user-name:hover {
@@ -112,12 +116,12 @@
                 </div>
                 {% else %}
                 <div class="d-flex align-items-center gap-2">
-                    {% if not current_user.is_following(user) %}    
-                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold" id="follow" onclick="follow_unfollow('{{user.username}}')">
+                    {% if not current_user.is_following(user) %}
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold" id="follow" onclick="follow_unfollow('profile', '{{user.username}}')">
                         <i class="fa-solid fa-plus"></i> Follow
                     </button>
                     {% else %}
-                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" id="unfollow" onclick="follow_unfollow('{{user.username}}')">
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" id="unfollow" onclick="follow_unfollow('profile', '{{user.username}}')">
                         <i class="fa-solid fa-check"></i> Following
                     </button>
                     {% endif %}
@@ -176,26 +180,34 @@
                 <div class="card-body">
                     <h5 class="card-title m-0">People also viewed</h5>
                     <ul class="list-group list-group-flush other-users">
-                        {% for user in users %}
-                            <li class="list-group-item list d-flex gap-3 align-items-start py-3">
-                                <a href="{{url_for('main.user', username=user.username)}}">
-                                    <img src="{{user.gravatar(size=256)}}" class="rounded-circle" alt="" style="width: 3em;">
-                                </a>
-                                <div class="text-secondary">
-                                    <a href="{{url_for('main.user', username=user.username)}}">
-                                        <span class="text-dark fw-bold user-name">
-                                            {{ user.name }}
-                                        </span><small class="text-secondary"> · 3rd</small><br>
-                                        <span class="text-dark" style="font-size: 14px;">
-                                            {{ user.about_me[:40] }}
-                                            {% if user.about_me|length > 40 %} ...{% endif %}
-                                        </span>
+                        {% for user_from_users in users %}
+                            {% if user_from_users != user %}    
+                                <li class="list-group-item list d-flex gap-3 align-items-start py-3">
+                                    <a href="{{url_for('main.user', username=user_from_users.username)}}">
+                                        <img src="{{user_from_users.gravatar(size=256)}}" class="rounded-circle" alt="" style="width: 3em;">
                                     </a>
-                                    <button class="btn btn-outline-secondary rounded-pill px-3 mt-2 fw-bold">
-                                        <i class="fa-solid fa-lock"></i> Message
-                                    </button>
-                                </div>
-                            </li>
+                                    <div class="text-secondary">
+                                        <a href="{{url_for('main.user', username=user_from_users.username)}}">
+                                            <span class="text-dark fw-bold user-name">
+                                                {{ user_from_users.name }}
+                                            </span><small class="text-secondary"> · 3rd</small><br>
+                                            <span class="text-dark" style="font-size: 14px;">
+                                                {{ user_from_users.about_me[:40] }}
+                                                {% if user_from_users.about_me|length > 40 %} ...{% endif %}
+                                            </span>
+                                        </a>
+                                        {% if not current_user.is_following(user_from_users) %}
+                                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2" id="follow-{{user_from_users.id}}" onclick="follow_unfollow({{user_from_users.id}}, '{{user_from_users.username}}')">
+                                            <i class="fa-solid fa-plus"></i> Follow
+                                        </button>
+                                        {% else %}
+                                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2" id="unfollow-{{user_from_users.id}}" onclick="follow_unfollow({{user_from_users.id}}, '{{user_from_users.username}}')">
+                                            <i class="fa-solid fa-check"></i> Following
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -204,6 +216,7 @@
     </div>
 </div>
 
+<!-- MODALS -->
 <div class="modal fade" id="contact-info" tabindex="-1" aria-labelledby="contact-info" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -262,50 +275,85 @@
 <script>
     document.querySelector('.window-location').innerHTML = window.location.host + window.location.pathname;
 
-    async function follow_user(username) {
+    async function follow_user(data, username) {
         try {
             const response = await fetch(`/follow/${username}`);
             if (!response.ok) {
               throw new Error('Request failed.');
             }
-            document.querySelector('.followers_count').innerHTML++;
+
+            if (data == "profile") {
+                document.querySelector('.followers_count').innerHTML++;
+            }
+
         } catch (error) {
             console.log(error);
         }
         console.log('followed');
     }
 
-    async function unfollow_user(username) {
+    async function unfollow_user(data, username) {
         try {
             const response = await fetch(`/unfollow/${username}`);
             if (!response.ok) {
               throw new Error('Request failed.');
             }
-            document.querySelector('.followers_count').innerHTML--;
+
+            if (data == "profile") {
+                document.querySelector('.followers_count').innerHTML--;
+            }
+
         } catch (error) {
             console.log(error);
         }
         console.log('unfollowed');
     }
 
-    function follow_unfollow(username) {
-        const follow_btn = document.querySelector('#follow');
-        const unfollow_btn = document.querySelector('#unfollow');
+    function follow_unfollow(data, username) {
+        if (data == 'profile') {
+            // This case will only run when the follow button in profile page section 
+            // clicked ..
+            const follow_btn = document.querySelector('#follow');
+            const unfollow_btn = document.querySelector('#unfollow');
+    
+            if (follow_btn) {
+                follow_btn.className = "btn btn-outline-primary rounded-pill px-3 fw-bold";
+                follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
+                follow_btn.id = "unfollow";
+                follow_user('profile', username);
+    
+            } else {
+                unfollow_btn.className = "btn btn-primary rounded-pill px-3 fw-bold";
+                unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
+                unfollow_btn.id = "follow";
+                unfollow_user('profile', username);
+            }
+        }
+        
+        else {
+            /* This case will run when button in suggestions section of profile
+             * page is clicked.
+             *  -> 'data' will be user_id
+             */
+            const follow_btn = document.querySelector(`#follow-${data}`);
+            const unfollow_btn = document.querySelector(`#unfollow-${data}`);
 
-        if (follow_btn) {
-            follow_btn.className = "btn btn-outline-primary rounded-pill px-3 fw-bold";
-            follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
-            follow_btn.id = "unfollow";
-            follow_user(username);
-
-        } else {
-            unfollow_btn.className = "btn btn-primary rounded-pill px-3 fw-bold";
-            unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
-            unfollow_btn.id = "follow";
-            unfollow_user(username);
+            if (follow_btn) {
+                follow_btn.className = "btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2";
+                follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
+                follow_btn.id = `unfollow-${data}`;
+                follow_user('profile__suggestions', username);
+    
+            } else {
+                unfollow_btn.className = "btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2";
+                unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
+                unfollow_btn.id = `follow-${data}`;
+                unfollow_user('profile__suggestions', username);
+            }
         }
     }
 
+    // Initialization for bootstrap tooltip
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
       
