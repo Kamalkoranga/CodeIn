@@ -146,22 +146,61 @@
 </div>
 
 <div class="modal fade" id="contact-info" tabindex="-1" aria-labelledby="contact-info" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">{{ user.name }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <h5>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-match text-secondary" width="24" height="24" focusable="false">
-                    <path d="M11.8 13l7.67-10H22L12 16l-4-4 1.41-1.41zm6.64-3.72a7 7 0 11-2.63-3.12L17 4.54a9.08 9.08 0 102.75 3z"></path></svg> Verified Account
-                </h5>
-                <p class="text-secondary">
-                    A phone number associated with this account has been verified. You can remove this verification at any time. Learn more about <a href="#" class="fw-bold">account verification</a>.
-                </p>
+            <div class="modal-body p-0">
+                <div class="modal-body__top bg-body-tertiary p-3">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-match text-secondary" width="24" height="24" focusable="false">
+                        <path d="M11.8 13l7.67-10H22L12 16l-4-4 1.41-1.41zm6.64-3.72a7 7 0 11-2.63-3.12L17 4.54a9.08 9.08 0 102.75 3z"></path></svg> Verified Account
+                    </h5>
+                    <p class="text-secondary">
+                        A phone number associated with this account has been verified.
+                        {% if current_user == user %}You can remove this verification at any time.{% endif %}
+                        Learn more about <a href="#" class="fw-bold">account verification</a>.
+                    </p>
+                </div>
+
+                <div class="modal-body__body">
+                    <h4 class="ps-3 pt-3 fw-normal">Contact info</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-brands fa-linkedin fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>{{ user.name }}'s Profile</h5>
+                                <a href="{{url_for('main.user', username=user.username)}}" class="fw-bold window-location"></a>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-regular fa-envelope fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>Email</h5>
+                                <a href="mailto:{{user.email}}" class="fw-bold">{{ user.email }}</a>
+                            </span>
+                        </li>
+                        {% if current_user == user %}    
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-solid fa-cake-candles fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>Birthday</h5>
+                                <span>January 13</span>
+                            </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
+{% block script %}
+<script>
+    document.querySelector('.window-location').innerHTML = window.location.host + window.location.pathname;
+</script>
+{% endblock script %}
