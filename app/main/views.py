@@ -68,9 +68,12 @@ def get_image(id):
 def user(username):
     # Retrieve the user from the database based on the provided username
     user = User.query.filter_by(username=username).first_or_404()
+    users = User.query.filter(User.id != current_user.id).all()
 
     # Render the 'user.html' template and pass the user object to the template
-    return render_template('user.html', user=user, nav_color="rgba(0,0,0,0.6)")
+    return render_template(
+        'user.html', user=user, users=users, nav_color="rgba(0,0,0,0.6)"
+    )
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])

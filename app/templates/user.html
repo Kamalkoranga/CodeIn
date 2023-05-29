@@ -18,7 +18,7 @@
         font-size: 16px;
     }
 
-    .profile-top a, .modal-body a {
+    .profile-top a, .modal-body a, .other-users a {
         text-decoration: none;
     }
 
@@ -33,7 +33,8 @@
         color: #0a58ca;
     }
 
-    .profile-top .btn-outline-secondary:hover {
+    .profile-top .btn-outline-secondary:hover,
+    .other-users button:hover {
         box-shadow: inset 0 0 0 2px #6c757d !important;
         background-color: #e8e8e8cf;
         color: #6c757d;
@@ -50,6 +51,15 @@
 
     .second-col .list-group a:hover {
         text-decoration: underline;
+    }
+
+    .other-users a:hover {
+        text-decoration: none !important;
+    }
+
+    .user-name:hover {
+        text-decoration: underline !important;
+        color: #0a58ca !important;
     }
 </style>
 {% endblock style %}
@@ -134,7 +144,7 @@
         {% endif %}
     </div>
 
-    <div class="col-3 flex-fill second-col">
+    <div class="col-3 flex-fill second-col mb-2">
         {% if current_user == user %}
         <ul class="list-group mb-2">
             <a href="{{url_for('main.edit_profile')}}" class="list-group-item text-secondary fw-bold py-4 d-flex gap-4" target="_blank">Edit public profile & URL <i class="fa-solid fa-circle-question"></i></a>
@@ -142,12 +152,39 @@
         </ul>
         {% endif %}
 
-        <div class="card">
-            <img src="{{url_for('static', filename='images/ad.png')}}" alt="ad" class="rounded">
-        </div>
+        <div class="z-1 sticky-top" style="top: 5em;">
+            <div class="card mb-2">
+                <img src="{{url_for('static', filename='images/ad.png')}}" alt="ad" class="rounded">
+            </div>
 
-        <div class="card">
-            <!-- other people suggestions -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title m-0">People also viewed</h5>
+                    <ul class="list-group list-group-flush other-users">
+                        {% for user in users %}
+                            <li class="list-group-item list d-flex gap-3 align-items-start py-3">
+                                <a href="{{url_for('main.user', username=user.username)}}">
+                                    <img src="{{user.gravatar(size=256)}}" class="rounded-circle" alt="" style="width: 3em;">
+                                </a>
+                                <div class="text-secondary">
+                                    <a href="{{url_for('main.user', username=user.username)}}">
+                                        <span class="text-dark fw-bold user-name">
+                                            {{ user.name }}
+                                        </span><small class="text-secondary"> · 3rd</small><br>
+                                        <span class="text-dark" style="font-size: 14px;">
+                                            {{ user.about_me[:40] }}
+                                            {% if user.about_me|length > 40 %} ...{% endif %}
+                                        </span>
+                                    </a>
+                                    <button class="btn btn-outline-secondary rounded-pill px-3 mt-2 fw-bold">
+                                        <i class="fa-solid fa-lock"></i> Message
+                                    </button>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
