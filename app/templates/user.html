@@ -79,12 +79,12 @@
 
                 {% if current_user == user %}
                 <p class="mb-2">
-                    <a href="#" class="text-primary fw-bold">72 followers</a> •
+                    <a href="#" class="text-primary fw-bold">{{ user.followers.count() }} followers</a> •
                     <a href="#" class="text-primary fw-bold"> 70 connections</a>
                 </p>
                 {% else %}
                 <p class="mb-2 text-secondary">
-                    <span class="fw-bold">247</span> followers •
+                    <span class="fw-bold followers_count">{{ user.followers.count() }}</span> followers •
                     <span class="fw-bold">231</span> connections
                 </p>
                 {% endif %}
@@ -211,10 +211,28 @@
     document.querySelector('.window-location').innerHTML = window.location.host + window.location.pathname;
 
     async function follow_user(username) {
+        try {
+            const response = await fetch(`/follow/${username}`);
+            if (!response.ok) {
+              throw new Error('Request failed.');
+            }
+            document.querySelector('.followers_count').innerHTML++;
+        } catch (error) {
+            console.log(error);
+        }
         console.log('followed');
     }
 
     async function unfollow_user(username) {
+        try {
+            const response = await fetch(`/unfollow/${username}`);
+            if (!response.ok) {
+              throw new Error('Request failed.');
+            }
+            document.querySelector('.followers_count').innerHTML--;
+        } catch (error) {
+            console.log(error);
+        }
         console.log('unfollowed');
     }
 
