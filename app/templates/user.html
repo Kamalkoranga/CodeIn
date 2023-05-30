@@ -1,30 +1,389 @@
 {% extends "base.html" %}
-{% block title %}{{ user.username }} | CodeIn{% endblock %}
+{% block title %}{{ user.name }} | CodeIn{% endblock %}
+{% block style %}
+<style>
+    .first-col {
+        width: 72%;
+    }
+
+    .profile-top__image {
+        border-radius: 50%;
+        border: 5px solid #fff;
+        width: 11em;
+        top: 100px;
+        left: 2em;
+    }
+
+    .profile-top .headline {
+        font-size: 16px;
+    }
+
+    .profile-top a, .modal-body a, .other-users a {
+        text-decoration: none;
+    }
+
+    .profile-top a:hover,
+    .modal-body a:hover {
+        text-decoration: underline;
+    }
+
+    .profile-top .btn-outline-primary:hover {
+        box-shadow: inset 0 0 0 2px #0a58ca !important;
+        background-color: #dae6f9cd;
+        color: #0a58ca;
+    }
+
+    .profile-top .btn-outline-secondary:hover,
+    .other-users button:hover {
+        box-shadow: inset 0 0 0 2px #6c757d !important;
+        background-color: #e8e8e8cf;
+        color: #6c757d;
+    }
+
+    .modal-body p {
+        font-size: 16px;
+    }
+
+    .second-col .list-group a {
+        font-size: 16px;
+    }
+
+    .second-col .list-group a:hover {
+        text-decoration: underline !important;
+    }
+
+    .second-col .other-users a:hover {
+        text-decoration: none !important;
+    }
+
+    .other-users button {
+        border: 2px solid #6c757d;
+    }
+
+    .user-name:hover {
+        text-decoration: underline !important;
+        color: #0a58ca !important;
+    }
+
+    .custom-tooltip {
+        --bs-tooltip-bg: var(--bs-white);
+        --bs-tooltip-color: var(--bs-dark);
+        --bs-tooltip-font-size: 1em;
+    }
+
+    .premium-btn {
+        background-color: #f8c77e;
+        color: #000000e6;
+        font-weight: bold;
+    }
+</style>
+{% endblock style %}
 {% block content %}
-<div class="page-header">
-    <h1>{{ user.username }}</h1>
-    {% if user.name or user.location %}
-    <p>
-        {% if user.name %}{{ user.name }}{% endif %}
-        {% if user.location %}
-        From <a href="http://maps.google.com/?q={{ user.location }}">
-            {{ user.location }}
-        </a>
+<div class="row">
+    <div class="col-9 first-col">
+        {% if current_user == user %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title m-0">Analytics & tools</h5>
+                <small class="card-text text-secondary">
+                    Post impressions past 7 days <strong class="text-dark">36</strong><span class="text-danger ms-1 fw-bold"> <i class="fa-sharp fa-solid fa-caret-down"></i> 76.1%</span>
+                </small>
+            </div>
+        </div>
         {% endif %}
-    </p>
-    {% endif %}
-    {% if current_user.username == user.username %}
-    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-    {% endif %}
-    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-    <p>
-        Member since {{ moment(user.member_since).format('L') }}.
-        Last seen {{ moment(user.last_seen).fromNow() }}.
-    </p>
-    {% if user == current_user %}
-    <a class="btn btn-primary" href="{{ url_for('.edit_profile') }}">
-        Edit Profile
-    </a>
-    {% endif %}
+
+        <div class="card profile-top mb-2">
+            <img src="{{url_for('static', filename='images/card-bg.svg')}}" alt="" class="position-relative mb-5 rounded-top">
+            <img src="{{user.gravatar(size=256)}}" alt="" class="position-absolute profile-top__image">
+            <div class="card-body mt-2 px-4">
+                <h2>{{ user.name }}<small class="text-secondary fs-6 fw-normal ms-2">(He/him)</small></h2>
+                <p class="card-text headline my-1">{{ user.about_me }}</p>
+                <p class="mb-2">
+                    <span class="card-text text-secondary">{{ user.location }}</span> • <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#contact-info">Contact info</a>
+                </p>
+
+                {% if current_user == user %}
+                <p class="mb-2">
+                    <a href="#" class="text-primary fw-bold">{{ user.followers.count() }} followers</a> •
+                    <a href="#" class="text-primary fw-bold"> 70 connections</a>
+                </p>
+                {% else %}
+                <p class="mb-2 text-secondary">
+                    <span class="fw-bold followers_count">{{ user.followers.count() }}</span> followers •
+                    <span class="fw-bold">231</span> connections
+                </p>
+                {% endif %}
+
+                {% if current_user == user %}
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold">Open to</button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">Add profile section</button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
+                </div>
+                {% else %}
+                <div class="d-flex align-items-center gap-2">
+                    {% if not current_user.is_following(user) %}
+                    <button type="button" class="btn btn-primary rounded-pill px-3 fw-bold" id="follow" onclick="follow_unfollow('profile', '{{user.username}}')">
+                        <i class="fa-solid fa-plus"></i> Follow
+                    </button>
+                    {% else %}
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" id="unfollow" onclick="follow_unfollow('profile', '{{user.username}}')">
+                        <i class="fa-solid fa-check"></i> Following
+                    </button>
+                    {% endif %}
+
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#message-info">
+                        <i class="fa-solid fa-lock"></i> Message
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if current_user == user %}
+        <div class="card mb-2 about">
+            <div class="card-body">
+                <h3 class="card-title">About</h3>
+                <p class="card-text">
+                    As a passionate coder and a student, I'm always seeking new challenges that allow me to learn and grow as a software developer. I thrive in dynamic environments where I can apply my technical skills to solve complex problems and build innovative solutions. <br> <br>
+
+                    My interest in coding began when I was in 11th grade. Since then, I've been constantly learning and experimenting with new technologies in order to broaden my skill set. I enjoy experimenting with various programming languages and tools, and I'm always eager to stay current with industry trends. <br><br>
+
+                    One of my favourite ways to put my coding skills to use and show off my creativity is to create projects. I've worked on a variety of projects in a variety of languages, which have taught me important lessons in project management, collaboration, and problem-solving. CodeHub is one of my personal favourites (codehub.gq). <br><br>
+
+                    I'm currently looking for new opportunities to hone my coding skills and work on meaningful projects. If you're looking for a motivated and dedicated software developer who enjoys learning and building, please connect with me. <br>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-3 flex-fill second-col mb-2">
+        {% if current_user == user %}
+        <ul class="list-group mb-2">
+            <div class="d-flex gap-4 list-group-item fw-bold py-4 justify-content-between align-items-baseline">
+                <a href="{{url_for('main.edit_profile')}}" class="text-secondary text-decoration-none" target="_blank">
+                    Edit public profile & URL 
+                </a>
+                <i class="fa-solid fa-circle-question text-secondary fa-lg" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="See and edit how you look to people who are not signed in, and find you through search engines (ex: Google, Bing)." data-bs-placement="bottom"></i>
+            </div>
+            <div class="d-flex gap-4 list-group-item fw-bold py-4 justify-content-between align-items-baseline">
+                <a href="#" class="text-secondary text-decoration-none" target="_blank">
+                    Add profile in another language
+                </a>
+                <i class="fa-solid fa-circle-question text-secondary fa-lg" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Creating a profile in another language makes it easier for local business contacts and recruiters to find you on LinkedIn." data-bs-placement="bottom"></i>
+            </div>
+        </ul>
+        {% endif %}
+
+        <div class="z-1 sticky-top" style="top: 5em;">
+            <div class="card mb-2">
+                <img src="{{url_for('static', filename='images/ad.png')}}" alt="ad" class="rounded">
+            </div>
+
+            <!-- OTHER PEOPLE SUGGESTIONS -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title m-0">People also viewed</h5>
+                    <ul class="list-group list-group-flush other-users">
+                        {% for user_from_users in users %}
+                            {% if user_from_users != user %}    
+                                <li class="list-group-item list d-flex gap-3 align-items-start py-3">
+                                    <a href="{{url_for('main.user', username=user_from_users.username)}}">
+                                        <img src="{{user_from_users.gravatar(size=256)}}" class="rounded-circle" alt="" style="width: 3em;">
+                                    </a>
+                                    <div class="text-secondary">
+                                        <a href="{{url_for('main.user', username=user_from_users.username)}}">
+                                            <span class="text-dark fw-bold user-name">
+                                                {{ user_from_users.name }}
+                                            </span><small class="text-secondary"> · 3rd</small><br>
+                                            <span class="text-dark" style="font-size: 14px;">
+                                                {{ user_from_users.about_me[:40] }}
+                                                {% if user_from_users.about_me|length > 40 %} ...{% endif %}
+                                            </span>
+                                        </a>
+                                        {% if not current_user.is_following(user_from_users) %}
+                                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2" id="follow-{{user_from_users.id}}" onclick="follow_unfollow({{user_from_users.id}}, '{{user_from_users.username}}')">
+                                            <i class="fa-solid fa-plus"></i> Follow
+                                        </button>
+                                        {% else %}
+                                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2" id="unfollow-{{user_from_users.id}}" onclick="follow_unfollow({{user_from_users.id}}, '{{user_from_users.username}}')">
+                                            <i class="fa-solid fa-check"></i> Following
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- MODALS -->
+<div class="modal fade" id="contact-info" tabindex="-1" aria-labelledby="contact-info" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ user.name }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="modal-body__top bg-body-tertiary p-3">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-supported-dps="24x24" fill="currentColor" class="mercado-match text-secondary" width="24" height="24" focusable="false">
+                        <path d="M11.8 13l7.67-10H22L12 16l-4-4 1.41-1.41zm6.64-3.72a7 7 0 11-2.63-3.12L17 4.54a9.08 9.08 0 102.75 3z"></path></svg> Verified Account
+                    </h5>
+                    <p class="text-secondary">
+                        A phone number associated with this account has been verified.
+                        {% if current_user == user %}You can remove this verification at any time.{% endif %}
+                        Learn more about <a href="#" class="fw-bold">account verification</a>.
+                    </p>
+                </div>
+
+                <div class="modal-body__body">
+                    <h4 class="ps-3 pt-3 fw-normal">Contact info</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-brands fa-linkedin fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>{{ user.name }}'s Profile</h5>
+                                <a href="{{url_for('main.user', username=user.username)}}" class="fw-bold window-location"></a>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-regular fa-envelope fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>Email</h5>
+                                <a href="mailto:{{user.email}}" class="fw-bold">{{ user.email }}</a>
+                            </span>
+                        </li>
+                        {% if current_user == user %}    
+                        <li class="list-group-item d-flex gap-3 p-3 border-0">
+                            <i class="fa-solid fa-cake-candles fa-xl mt-2 pt-1 text-secondary"></i>
+                            <span>
+                                <h5>Birthday</h5>
+                                <span>January 13</span>
+                            </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="message-info" tabindex="-1" aria-labelledby="messageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="max-width: 350px;">
+        <div class="modal-header border-0">
+            <div class="d-flex gap-2 align-items-start">
+                <img src="{{user.gravatar(size=256)}}" alt="profile" style="width: 3em;" class="rounded-circle">
+                <h1 class="modal-title fs-5" id="messageLabel">Message {{ user.name }} with <br> Premium</h1>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            With Premium InMail, you can message anyone even if you're not connected. It's 2.6x more effective in hearing back than email or cold calls.
+        </div>
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-warning rounded-pill premium-btn">Try Premium for free</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
+{% block script %}
+<script>
+    document.querySelector('.window-location').innerHTML = window.location.host + window.location.pathname;
+
+    async function follow_user(data, username) {
+        try {
+            const response = await fetch(`/follow/${username}`);
+            if (!response.ok) {
+              throw new Error('Request failed.');
+            }
+
+            if (data == "profile") {
+                document.querySelector('.followers_count').innerHTML++;
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+        console.log('followed');
+    }
+
+    async function unfollow_user(data, username) {
+        try {
+            const response = await fetch(`/unfollow/${username}`);
+            if (!response.ok) {
+              throw new Error('Request failed.');
+            }
+
+            if (data == "profile") {
+                document.querySelector('.followers_count').innerHTML--;
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+        console.log('unfollowed');
+    }
+
+    function follow_unfollow(data, username) {
+        if (data == 'profile') {
+            // This case will only run when the follow button in profile page section 
+            // clicked ..
+            const follow_btn = document.querySelector('#follow');
+            const unfollow_btn = document.querySelector('#unfollow');
+    
+            if (follow_btn) {
+                follow_btn.className = "btn btn-outline-primary rounded-pill px-3 fw-bold";
+                follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
+                follow_btn.id = "unfollow";
+                follow_user('profile', username);
+    
+            } else {
+                unfollow_btn.className = "btn btn-primary rounded-pill px-3 fw-bold";
+                unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
+                unfollow_btn.id = "follow";
+                unfollow_user('profile', username);
+            }
+        }
+        
+        else {
+            /* THIS IS FOR FOLLOWINNG/UNFOLLOWING USER FROM SUGGESTION SECTION IN PROFILE PAGE
+             * This case will run when button in suggestions section of profile
+             * page is clicked.
+             *  -> 'data' will be user_id
+             */
+            const follow_btn = document.querySelector(`#follow-${data}`);
+            const unfollow_btn = document.querySelector(`#unfollow-${data}`);
+
+            if (follow_btn) {
+                follow_btn.className = "btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2";
+                follow_btn.innerHTML = `<i class="fa-solid fa-check"></i> Following`;
+                follow_btn.id = `unfollow-${data}`;
+                follow_user('profile__suggestions', username);
+    
+            } else {
+                unfollow_btn.className = "btn btn-outline-secondary rounded-pill px-3 fw-bold mt-2";
+                unfollow_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Follow`;
+                unfollow_btn.id = `follow-${data}`;
+                unfollow_user('profile__suggestions', username);
+            }
+        }
+    }
+
+    // Initialization for bootstrap tooltip
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      
+</script>
+{% endblock script %}
