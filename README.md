@@ -1,2 +1,2 @@
-# CodeIn
-This is a clone of popular social media platform .i.e, LinkedIn. This is built using flask, python in backend and html, css, js and bootstrap in frontend.
+# CodeIn - Clone of LinkedIn
+This is a clone of popular social media platform .i.e, LinkedIn. This is built with flask as a backend, postgresql as a database and html, css and js as a frontend.
