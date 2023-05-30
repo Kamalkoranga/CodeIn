@@ -68,6 +68,8 @@ def get_image(id):
 def user(username):
     # Retrieve the user from the database based on the provided username
     user = User.query.filter_by(username=username).first_or_404()
+
+    # Retrieve all users from the database except current user
     users = User.query.filter(User.id != current_user.id).all()
 
     # Render the 'user.html' template and pass the user object to the template
@@ -174,16 +176,33 @@ def add_comment(post_id):
 @main.route('/follow/<username>')
 @login_required
 def follow(username):
+    # Retrieve the user object from the database based on the provided username
     user = User.query.filter_by(username=username).first()
+
+    # Follow the specified user by calling the 'follow' method of the current
+    # user object.
     current_user.follow(user)
+
+    # Commit the changes made to the database.
     db.session.commit()
+
+    # Return a JSON response indicating that the follow action was successful.
     return jsonify({'msg': 'following'})
 
 
 @main.route('/unfollow/<username>')
 @login_required
 def unfollow(username):
+    # Retrieve the user object from the database based on the provided username
     user = User.query.filter_by(username=username).first()
+
+    # Unfollow the specified user by calling the 'unollow' method of the
+    # current user object.
     current_user.unfollow(user)
+
+    # Commit the changes made to the database.
     db.session.commit()
+
+    # Return a JSON response indicating that the unfollow action was
+    # successful.
     return jsonify({'msg': 'You are not following this user anymore.'})
