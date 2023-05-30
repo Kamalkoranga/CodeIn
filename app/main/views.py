@@ -1,4 +1,12 @@
-from flask import render_template, flash, redirect, url_for, jsonify, request
+from flask import (
+    render_template,
+    flash,
+    redirect,
+    url_for,
+    jsonify,
+    request,
+    current_app,
+)
 from . import main
 from flask_login import login_required, current_user
 from .forms import PostForm, EditProfileForm
@@ -6,7 +14,7 @@ from ..models import Post, User, Like, Comment
 from .. import db
 
 
-@main.route('/feed', methods=['GET', 'POST'])
+@main.route("/feed", methods=["GET", "POST"])
 @login_required
 def index():
     # Create an instance of the PostForm class
@@ -18,7 +26,7 @@ def index():
             body=form.body.data,
             post_name=form.post.data.filename,
             post_data=form.post.data.read(),
-            author_id=current_user.id
+            author_id=current_user.id,
         )
 
         # Add the new post to the database session
@@ -28,22 +36,32 @@ def index():
         db.session.commit()
 
         # Display a flash message to indicate successful posting
-        flash('Posted Successfully')
+        flash("Posted Successfully")
 
         # Redirect the user to the 'index' endpoint
-        return redirect(url_for('main.index'))
+        return redirect(url_for("main.index"))
 
     # Retrieve all posts from the database in descending order of timestamp
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+
+    page = request.args.get("page", 1, type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    posts = pagination.items
+    print(posts)
 
     # Retrieve all comments from the database
     comments = Comment.query.all()
 
-    '''Render the 'index.html' template, passing the form, posts and comments
-    to the template'''
+    """Render the 'index.html' template, passing the form, posts and comments
+    to the template"""
     return render_template(
-        'index.html', form=form, posts=posts, comments=comments,
-        nav_color="black"
+        "index.html",
+        form=form,
+        posts=posts,
+        comments=comments,
+        nav_color="black",
+        pagination=pagination,
     )
 
 
@@ -64,7 +82,7 @@ def get_image(id):
     return image.post_data, {"Content-Type": "image/jpeg"}
 
 
-@main.route('/user/<username>')
+@main.route("/user/<username>")
 def user(username):
     # Retrieve the user from the database based on the provided username
     user = User.query.filter_by(username=username).first_or_404()
@@ -74,17 +92,16 @@ def user(username):
 
     # Render the 'user.html' template and pass the user object to the template
     return render_template(
-        'user.html', user=user, users=users, nav_color="rgba(0,0,0,0.6)"
+        "user.html", user=user, users=users, nav_color="rgba(0,0,0,0.6)"
     )
 
 
-@main.route('/edit-profile', methods=['GET', 'POST'])
+@main.route("/edit-profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
     # Create an instance of the EditProfileForm
     form = EditProfileForm()
     if form.validate_on_submit():
-
         # If the form is submitted and passes validation
         # Update the user's profile details with the form data
         current_user.name = form.name.data
@@ -98,10 +115,10 @@ def edit_profile():
         db.session.commit()
 
         # Display a flash message to indicate successful profile update
-        flash('Your profile has been updated.')
+        flash("Your profile has been updated.")
 
         # Redirect the user to their profile page
-        return redirect(url_for('.user', username=current_user.username))
+        return redirect(url_for(".user", username=current_user.username))
 
     # Populate the form fields with the current user's profile data
     form.name.data = current_user.name
@@ -111,21 +128,20 @@ def edit_profile():
 
     # Render the 'edit_profile.html' template, passing the form object to the
     # template
-    return render_template('edit_profile.html', form=form)
+    return render_template("edit_profile.html", form=form)
 
 
-@main.route('/like_post/<post_id>', methods=['POST'])
+@main.route("/like_post/<post_id>", methods=["POST"])
 @login_required
 def like_post(post_id):
     # Get the post object based on the provided post_id
     post = Post.query.filter_by(id=int(post_id)).first()
 
     # Check if the user has already liked the post
-    like = Like.query.filter_by(
-        author_id=current_user.id, post_id=post.id).first()
+    like = Like.query.filter_by(author_id=current_user.id, post_id=post.id).first()
 
     if not post:
-        return jsonify({'error': 'Post does not exist.'}, 400)
+        return jsonify({"error": "Post does not exist."}, 400)
     elif like:
         # If the user has already liked the post, remove the like
         db.session.delete(like)
@@ -138,14 +154,13 @@ def like_post(post_id):
     res = {
         # Total number of likes for the post
         "likes": len(post.likes),
-
         # Check if the current user has liked the post
-        "liked": current_user.id in map(lambda x: x.author_id, post.likes)
+        "liked": current_user.id in map(lambda x: x.author_id, post.likes),
     }
     return jsonify(res)
 
 
-@main.route('/add_comment/<post_id>', methods=['POST'])
+@main.route("/add_comment/<post_id>", methods=["POST"])
 @login_required
 def add_comment(post_id):
     # Retrieve the post object based on the provided post_id
@@ -153,16 +168,16 @@ def add_comment(post_id):
 
     # Check if the post exists
     if not post:
-        return jsonify({'error': 'post not found'})
+        return jsonify({"error": "post not found"})
 
     # Get the JSON data from the request
     data = request.get_json()
 
     # Create a new Comment object with the provided data
     comment = Comment(
-        body=data['body'],
+        body=data["body"],
         author=current_user._get_current_object(),
-        post_id=data['post_id']
+        post_id=data["post_id"],
     )
 
     # Add the comment to the database session
@@ -170,10 +185,10 @@ def add_comment(post_id):
     db.session.commit()
 
     # Return a JSON response indicating successful addition of the comment
-    return jsonify({'msg': 'added'})
+    return jsonify({"msg": "added"})
 
 
-@main.route('/follow/<username>')
+@main.route("/follow/<username>")
 @login_required
 def follow(username):
     # Retrieve the user object from the database based on the provided username
@@ -187,10 +202,10 @@ def follow(username):
     db.session.commit()
 
     # Return a JSON response indicating that the follow action was successful.
-    return jsonify({'msg': 'following'})
+    return jsonify({"msg": "following"})
 
 
-@main.route('/unfollow/<username>')
+@main.route("/unfollow/<username>")
 @login_required
 def unfollow(username):
     # Retrieve the user object from the database based on the provided username
@@ -205,4 +220,4 @@ def unfollow(username):
 
     # Return a JSON response indicating that the unfollow action was
     # successful.
-    return jsonify({'msg': 'You are not following this user anymore.'})
+    return jsonify({"msg": "You are not following this user anymore."})
