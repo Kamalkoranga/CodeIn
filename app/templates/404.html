@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>LinkedIn</title>
+        <link
+            href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+            rel="stylesheet">
+        <link
+            rel="shortcut icon"
+            href="https://static.licdn.com/sc/h/90y3av2ns08iojcadywbxioqh"
+            type="image/x-icon">
+        <style>
+            .text-decoration-none a {
+                text-decoration: none !important;
+            }
+
+            .text-decoration-none a:hover {
+                text-decoration: underline !important;
+            }
+
+            .logo  img {
+                width: 10em;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="logo text-start mb-5 pb-5 mx-5">
+            <a href="{{url_for('main.index')}}">
+                <img src="https://logos-world.net/wp-content/uploads/2020/05/Linkedin-Logo.png" alt="">
+            </a>
+        </div>
+        <div class="d-flex align-items-center justify-content-center v-50 container mt-5 pt-5">
+            <div class="text-center row">
+                <div class=" col-md-6">
+                    <img src="{{url_for('static', filename='images/404.jpg')}}" alt=""
+                        class="img-fluid">
+                </div>
+                <div class=" col-md-6 mt-5">
+                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                    <p class="text-secondary lead text-decoration-none">
+                        Uh oh, we can't seem to find the page you're looking for. Try going back to the previous page or see our <a href="#" class="fw-bold">Help Center</a>  for more information
+                    </p>
+                    <a href="{{url_for('main.index')}}" class="btn btn-outline-primary">Go to your feed</a>
+                </div>
+
+            </div>
+        </div>
+
+        <script
+            src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    </body>
+
+</html>
