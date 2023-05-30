@@ -70,6 +70,12 @@
         --bs-tooltip-color: var(--bs-dark);
         --bs-tooltip-font-size: 1em;
     }
+
+    .premium-btn {
+        background-color: #f8c77e;
+        color: #000000e6;
+        font-weight: bold;
+    }
 </style>
 {% endblock style %}
 {% block content %}
@@ -126,7 +132,7 @@
                     </button>
                     {% endif %}
 
-                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold">
+                    <button type="button" class="btn btn-outline-primary rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#message-info">
                         <i class="fa-solid fa-lock"></i> Message
                     </button>
                     <button type="button" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">More</button>
@@ -269,6 +275,26 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="message-info" tabindex="-1" aria-labelledby="messageLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="max-width: 350px;">
+        <div class="modal-header border-0">
+            <div class="d-flex gap-2 align-items-start">
+                <img src="{{user.gravatar(size=256)}}" alt="profile" style="width: 3em;" class="rounded-circle">
+                <h1 class="modal-title fs-5" id="messageLabel">Message {{ user.name }} with <br> Premium</h1>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            With Premium InMail, you can message anyone even if you're not connected. It's 2.6x more effective in hearing back than email or cold calls.
+        </div>
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-warning rounded-pill premium-btn">Try Premium for free</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block script %}
