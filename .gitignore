@@ -2,5 +2,4 @@ env/
 .env
 __pycache__/
 data-dev.sqlite
-migrations/
 .vscode/
