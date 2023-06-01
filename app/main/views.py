@@ -5,7 +5,6 @@ from flask import (
     url_for,
     jsonify,
     request,
-    current_app,
 )
 from . import main
 from flask_login import login_required, current_user
@@ -106,6 +105,7 @@ def edit_profile():
         # Update the user's profile details with the form data
         current_user.name = form.name.data
         current_user.username = form.username.data
+        current_user.headline = form.headline.data
         current_user.location = form.location.data
         current_user.about_me = form.about_me.data
 
@@ -123,6 +123,7 @@ def edit_profile():
     # Populate the form fields with the current user's profile data
     form.name.data = current_user.name
     form.location.data = current_user.location
+    form.headline.data = current_user.headline
     form.about_me.data = current_user.about_me
     form.username.data = current_user.username
 
@@ -138,7 +139,8 @@ def like_post(post_id):
     post = Post.query.filter_by(id=int(post_id)).first()
 
     # Check if the user has already liked the post
-    like = Like.query.filter_by(author_id=current_user.id, post_id=post.id).first()
+    like = Like.query.filter_by(
+        author_id=current_user.id, post_id=post.id).first()
 
     if not post:
         return jsonify({"error": "Post does not exist."}, 400)

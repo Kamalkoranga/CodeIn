@@ -97,7 +97,7 @@
             <img src="{{user.gravatar(size=256)}}" alt="" class="position-absolute profile-top__image">
             <div class="card-body mt-2 px-4">
                 <h2>{{ user.name }}<small class="text-secondary fs-6 fw-normal ms-2">(He/him)</small></h2>
-                <p class="card-text headline my-1">{{ user.about_me }}</p>
+                <p class="card-text headline my-1">{{ user.headline }}</p>
                 <p class="mb-2">
                     <span class="card-text text-secondary">{{ user.location }}</span> • <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#contact-info">Contact info</a>
                 </p>
@@ -146,13 +146,7 @@
             <div class="card-body">
                 <h3 class="card-title">About</h3>
                 <p class="card-text">
-                    As a passionate coder and a student, I'm always seeking new challenges that allow me to learn and grow as a software developer. I thrive in dynamic environments where I can apply my technical skills to solve complex problems and build innovative solutions. <br> <br>
-
-                    My interest in coding began when I was in 11th grade. Since then, I've been constantly learning and experimenting with new technologies in order to broaden my skill set. I enjoy experimenting with various programming languages and tools, and I'm always eager to stay current with industry trends. <br><br>
-
-                    One of my favourite ways to put my coding skills to use and show off my creativity is to create projects. I've worked on a variety of projects in a variety of languages, which have taught me important lessons in project management, collaboration, and problem-solving. CodeHub is one of my personal favourites (codehub.gq). <br><br>
-
-                    I'm currently looking for new opportunities to hone my coding skills and work on meaningful projects. If you're looking for a motivated and dedicated software developer who enjoys learning and building, please connect with me. <br>
+                    {{ user.about_me }}
                 </p>
             </div>
         </div>

@@ -38,6 +38,7 @@ class EditProfileForm(FlaskForm):
 
     '''Full name and location field with length validator'''
     name = StringField('Full name', validators=[Length(0, 64)])
+    headline = StringField('Headline', validators=[Length(0, 128)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
     submit = SubmitField('Submit')  # submit button

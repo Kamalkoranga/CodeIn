@@ -15,6 +15,7 @@ def users(count=100):
             password="password",
             confirmed=True,
             name=fake.name(),
+            headline=fake.job(),
             location=fake.city(),
             about_me=fake.text(),
             member_since=fake.past_date(),

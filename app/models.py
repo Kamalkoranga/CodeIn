@@ -28,7 +28,9 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     name = db.Column(db.String(64))
-    # headline, pronouns, back-image, birthday, talks-about etc
+    headline = db.Column(db.String(128))
+    talks_about = db.Column(db.String(128))
+    # pronouns, back-image, birthday etc
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     avatar_hash = db.Column(db.String(32))
