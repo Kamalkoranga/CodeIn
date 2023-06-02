@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     confirmed = db.Column(db.Boolean, default=False)
     name = db.Column(db.String(64))
     headline = db.Column(db.String(128))
+    education = db.Column(db.String(128))
     talks_about = db.Column(db.String(128))
     # pronouns, back-image, birthday etc
     location = db.Column(db.String(64))
@@ -142,10 +143,15 @@ class Post(db.Model):
     post_name = db.Column(db.String(100))
     post_data = db.Column(LargeBinary)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id',
-                                                    ondelete='CASCADE'))
+    featured = db.Column(db.Boolean, default=False)
+    author_id = db.Column(
+        db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     comments = db.relationship('Comment', backref="post", passive_deletes=True)
     likes = db.relationship('Like', backref="post", passive_deletes=True)
+
+    def add_featured(self):
+        self.featured = True
+        db.session.add(self)
 
     def __repr__(self):
         return f'<Post {self.body[:10]}...'
@@ -165,6 +171,9 @@ class Comment(db.Model):
         db.ForeignKey('posts.id', ondelete='CASCADE'), nullable=False
     )
 
+    def __repr__(self):
+        return f'<Comment {self.body[:10]}...'
+
 
 class Like(db.Model):
     __tablename__ = 'likes'
@@ -173,3 +182,6 @@ class Like(db.Model):
         'users.id', ondelete='CASCADE'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey(
         'posts.id', ondelete='CASCADE'), nullable=False)
+
+    def __repr__(self):
+        return f'<Like by {self.author}...'
