@@ -141,16 +141,14 @@
             </div>
         </div>
 
-        {% if current_user == user %}
-        <div class="card mb-2 about">
+        <div class="card mb-2 about p-2">
             <div class="card-body">
-                <h3 class="card-title">About</h3>
+                <h4 class="card-title">About</h4>
                 <p class="card-text">
                     {{ user.about_me }}
                 </p>
             </div>
         </div>
-        {% endif %}
     </div>
 
     <div class="col-3 flex-fill second-col mb-2">
