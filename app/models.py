@@ -7,6 +7,8 @@ from flask import current_app
 from datetime import datetime
 from sqlalchemy import LargeBinary
 import hashlib
+from markdown import markdown
+import bleach
 
 
 class Follow(db.Model):
@@ -140,6 +142,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     post_name = db.Column(db.String(100))
     post_data = db.Column(LargeBinary)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -153,8 +156,21 @@ class Post(db.Model):
         self.featured = True
         db.session.add(self)
 
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'br',
+                        'h1', 'h2', 'h3', 'p'
+                        ]
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
     def __repr__(self):
         return f'<Post {self.body[:10]}...'
+
+
+db.event.listen(Post.body, 'set', Post.on_changed_body)
 
 
 class Comment(db.Model):
