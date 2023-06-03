@@ -47,7 +47,6 @@ def index():
         page=page, per_page=10, error_out=False
     )
     posts = pagination.items
-    print(posts)
 
     # Retrieve all comments from the database
     comments = Comment.query.all()
