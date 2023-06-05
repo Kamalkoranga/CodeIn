@@ -390,27 +390,27 @@
                     Here we checked if the current user has liked the post or not 
                 -->
                 {% if current_user.id in post.likes|map(attribute="author_id")|list %}
-                <span class="text-primary" id="like-span-{{post.id}}"  onclick="like({{post.id}});open_comments({{post.id}})">
+                <span class="text-primary px-1" id="like-span-{{post.id}}"  onclick="like({{post.id}});open_comments({{post.id}})">
                     <i class="fas fa-thumbs-up fa-flip-horizontal fa-xl" id="like-button-{{post.id}}">
-                    </i>&nbsp; Like
+                    </i><span class="p-0 icon-label px-2">Like</span>
                 </span>
                 {% else %}
-                <span class="text-secondary" id="like-span-{{post.id}}" onclick="like({{ post.id }});open_comments({{post.id}})">
-                    <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i>&nbsp; Like
+                <span class="text-secondary px-1" id="like-span-{{post.id}}" onclick="like({{ post.id }});open_comments({{post.id}})">
+                    <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i><span class="p-0 icon-label px-2">Like</span>
                 </span>
                 {% endif %}
 
-                <span class="text-secondary" onclick="open_comments({{post.id}})">
-                    <i class="fa-regular fa-comment-dots fa-xl text-secondary"></i>&nbsp;
-                    Comment
+                <span class="text-secondary px-1" onclick="open_comments({{post.id}})">
+                    <i class="fa-regular fa-comment-dots fa-xl text-secondary"></i>
+                    <span class="p-0 icon-label">Comment</span>
                 </span>
-                <span class="text-secondary">
-                    <i class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>&nbsp;
-                    Repost
+                <span class="text-secondary px-1">
+                    <i class="fa-solid fa-arrow-rotate-left fa-flip-vertical text-secondary fa-xl"></i>
+                    <span class="p-0 icon-label">Repost</span>
                 </span>
-                <span class="text-secondary">
-                    <i class="fa-solid fa-paper-plane text-secondary fa-xl"></i>&nbsp;
-                    Send
+                <span class="text-secondary px-1">
+                    <i class="fa-solid fa-paper-plane text-secondary fa-xl"></i>
+                    <span class="p-0 icon-label">Send</span>
                 </span>
             </div>
             <div class="comment-section d-flex align-items-start gap-2 mx-3 mb-3 d-none" id="comment-section-{{post.id}}">
@@ -437,10 +437,10 @@
                                         <span class="text-secondary fs-6">
                                             <strong>{{ comment.author.name }}</strong> • 3rd+
                                         </span>
-                                        {% if comment.author.about_me %}
+                                        {% if comment.author.headline %}
                                         <p class="text-secondary m-0">
-                                            {{ comment.author.about_me[:70] }}
-                                            {% if comment.author.about_me|length > 70 %}...{% endif %}
+                                            {{ comment.author.headline[:70] }}
+                                            {% if comment.author.headline|length > 70 %}...{% endif %}
                                         </p>
                                         {% endif %}
                                         <p class="text-secondary m-0">
@@ -657,10 +657,10 @@
                     <span class="text-secondary fs-6">
                         <strong>{{ current_user.name }}</strong> • 3rd+
                     </span>
-                    {% if current_user.about_me %}
+                    {% if current_user.headline %}
                     <p class="text-secondary m-0">{{
-                        current_user.about_me[:70] }}{% if
-                        current_user.about_me|length > 70 %}...{% endif %}
+                        current_user.headline[:70] }}{% if
+                        current_user.headline|length > 70 %}...{% endif %}
                     </p>
                     {% endif %}
                     <p class="text-secondary m-0">
