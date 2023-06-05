@@ -186,7 +186,7 @@
                                         <img src="{{user_from_users.gravatar(size=256)}}" class="rounded-circle" alt="" style="width: 3em;">
                                     </a>
                                     <div class="text-secondary">
-                                        <a href="{{url_for('main.user', username=user_from_users.username)}}">
+                                        <a href="{{url_for('main.user', username=user_from_users.username)}}" class="d-block">
                                             <span class="text-dark fw-bold user-name">
                                                 {{ user_from_users.name }}
                                             </span><small class="text-secondary"> · 3rd</small><br>

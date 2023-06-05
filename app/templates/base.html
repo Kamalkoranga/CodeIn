@@ -17,9 +17,18 @@
             .container {
                 max-width: 975px;
             }
+
+            .first-col {
+                width: 67.5% !important;
+            }
+
+            .profile-top__image {
+                top: 60px !important;
+                width: 152px !important;
+            }
         }
 
-        @media screen and (max-width:995px) {
+        @media screen and (max-width: 991px) {
             .container {
                 max-width: 750px;
             }
@@ -27,11 +36,75 @@
             .third-column {
                 display: none;
             }
+
+            .nav-first form {
+                display: none !important;
+            }
+
+            .nav-second {
+                justify-content: center !important;
+                margin-right: 0 !important;
+            }
+
+            .nav-third {
+                justify-content: center;
+            }
+
+            .first-col {
+                width: 58.5% !important;
+            }
+
+            .profile-top__image {
+                top: 40px !important;
+                width: 120px !important;
+            }
         }
 
-        @media screen and (max-width:777px) {
+        @media screen and (max-width:768px) {
             .container {
                 max-width: 550px;
+            }
+
+            .left {
+                max-width: 100% !important;
+            }
+
+            .nav-second {
+                gap: 2rem !important;
+            }
+
+            .first-col {
+                width: 100% !important;
+            }
+
+            .profile-top__image {
+                width: 152px !important;
+                top: 30px !important;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .nav-third a {
+                display: none !important;
+            }
+
+            .profile-top__image {
+                top: -10px !important;
+            }
+        }
+
+        @media screen and (max-width: 427px) {
+            .icon-label {
+                display: none;
+            }
+
+            nav > .container {
+                justify-content: flex-start !important;
+            }
+
+            .nav-second {
+                gap: 1.5rem !important;
+                margin-left: 20px;
             }
         }
 
@@ -65,7 +138,7 @@
     {% block nav %}
     <nav class="navbar sticky-top navbar-expand-lg bg-light mb-4">
         <div class="container">
-            <div class="col-3 d-flex align-items-center">
+            <div class="col-3 d-flex align-items-center nav-first">
                 <a href="{{url_for('main.index')}}" class="navbar-brand">
                     <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" style="color: #0a66c2">
                         <g>
@@ -80,7 +153,7 @@
                 </form>
                 {% endif %}
             </div>
-            <div class="col-6 d-flex justify-content-end gap-5 align-items-center me-5">
+            <div class="col-6 d-flex justify-content-end gap-5 align-items-center me-5 nav-second">
                 {% if current_user.is_authenticated %}
                 <a href="{{url_for('main.index')}}" class="position-relative">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" style="fill:{{nav_color}};">
@@ -130,13 +203,12 @@
                 {% endif %}
             </div>
             {% if current_user.is_authenticated %}
-            <div class="col-3 d-flex align-items-center gap-2 flex-fill">                
+            <div class="col-3 d-flex align-items-center gap-2 flex-fill nav-third">
                 <a href="" class="dropdown">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="rgba(0,0,0,0.6)">
                         <path d="M10 10h4v4h-4v-4zm0 11h4v-4h-4v4zm-7-7h4v-4H3v4zm0 7h4v-4H3v4zM3 7h4V3H3v4zm14 7h4v-4h-4v4zm0-11v4h4V3h-4zm-7 4h4V3h-4v4zm7 14h4v-4h-4v4z"></path>
                     </svg>
                 </a>
-                <a href="" style="font-size: 0.8em;" class="ms-2 text-warning-emphasis">Get Hired Faster,<br>Try Premium Free</a>
             </div>
             {% endif %}
         </div>
