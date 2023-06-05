@@ -17,9 +17,18 @@
             .container {
                 max-width: 975px;
             }
+
+            .first-col {
+                width: 67.5% !important;
+            }
+
+            .profile-top__image {
+                top: 60px !important;
+                width: 152px !important;
+            }
         }
 
-        @media screen and (max-width:991px) {
+        @media screen and (max-width: 991px) {
             .container {
                 max-width: 750px;
             }
@@ -40,6 +49,15 @@
             .nav-third {
                 justify-content: center;
             }
+
+            .first-col {
+                width: 58.5% !important;
+            }
+
+            .profile-top__image {
+                top: 40px !important;
+                width: 120px !important;
+            }
         }
 
         @media screen and (max-width:768px) {
@@ -54,11 +72,24 @@
             .nav-second {
                 gap: 2rem !important;
             }
+
+            .first-col {
+                width: 100% !important;
+            }
+
+            .profile-top__image {
+                width: 152px !important;
+                top: 30px !important;
+            }
         }
 
         @media screen and (max-width: 480px) {
             .nav-third a {
                 display: none !important;
+            }
+
+            .profile-top__image {
+                top: -10px !important;
             }
         }
 
