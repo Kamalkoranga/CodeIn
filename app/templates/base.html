@@ -198,7 +198,7 @@
                     <a href="" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img style="width: 1.7em;" src="{{ current_user.gravatar(size=256) }}" class="rounded-circle" alt="your profile-photo">
                     </a>
-                    <ul class="dropdown-menu z-3">
+                    <ul class="dropdown-menu z-3" style="left: -7.5em;">
                         <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('main.user', username=current_user.username) }}">View Profile</a></li>
                     </ul>
