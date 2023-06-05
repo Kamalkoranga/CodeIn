@@ -5,17 +5,27 @@
 
 {% block style %}
 <style>
-    .left form > * {
+    .signup-left h2 {
+        font-size: 32px !important;
+        text-align: center;
+    }
+
+    .signup-left form > * {
         margin-top: 1em !important;
     }
 
+    .signup-left form {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
     form {
         background-color: #fff;
         padding: 30px;
         border-radius: 10px;
     }
 
-    .left form label {
+    .signup-left form label {
         margin-bottom: 0.5em;
     }
 
@@ -28,15 +38,27 @@
     .right img {
         width: 125%;
     }
+
+    @media screen and (max-width: 991px) {
+        .signup-left h2 {
+            font-size: 24px !important;
+        }
+    }
+
+    @media screen and (max-width: 427px) {
+        nav .container {
+            justify-content: center !important;
+        }
+    }
 </style>
 {% endblock style %}
 
 {% block content %}
 <div class="row align-items-center justify-content-center">
-    <div class="col-7 left px-5">
-        <h2 class="mb-5">Make the most of your professional life</h2>
+    <div class="signup-left px-5">
+        <h2 class="mb-3">Make the most of your professional life</h2>
         {{ wtf.quick_form(form) }}
-        <p class="text-center mt-4">Already on LinkedIn? <a href="{{url_for('auth.login')}}"> Sign in</a></p>
+        <p class="text-center mt-4">Already on LinkedIn? <a href="{{url_for('auth.login')}}" class="fw-bold"> Sign in</a></p>
     </div>
 </div>
 {% endblock content %}
