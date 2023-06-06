@@ -1,0 +1,7 @@
+Dear {{ followed.name }},
+
+We're thrilled to inform you that {{ c_user.name }} has started following you on our platform. Stay connected with {{ c_user.name }}'s updates and enjoy a more engaging experience. Explore their profile and discover shared interests here.
+
+Best regards,
+The CodeIn Team
+Note: replies to this email address are not monitored.
