@@ -11,6 +11,7 @@ from flask_login import login_required, current_user
 from .forms import PostForm, EditProfileForm
 from ..models import Post, User, Like, Comment
 from .. import db
+from ..email import send_email
 
 
 @main.route("/feed", methods=["GET", "POST"])
@@ -152,6 +153,12 @@ def like_post(post_id):
         like = Like(author_id=current_user.id, post_id=post_id)
         db.session.add(like)
         db.session.commit()
+        send_email(
+            post.author.email,
+            'Notification: Your Post Received a Like!', 'email/liked',
+            post=post,
+            c_user=current_user
+        )
     res = {
         # Total number of likes for the post
         "likes": len(post.likes),
