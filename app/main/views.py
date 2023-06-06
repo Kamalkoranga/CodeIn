@@ -192,6 +192,14 @@ def add_comment(post_id):
     db.session.add(comment)
     db.session.commit()
 
+    send_email(
+        post.author.email,
+        'Notification: New Comment on Your Post', 'email/commented',
+        post=post,
+        comment=comment,
+        c_user=current_user
+    )
+
     # Return a JSON response indicating successful addition of the comment
     return jsonify({"msg": "added"})
 
