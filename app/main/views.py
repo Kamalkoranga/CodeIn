@@ -154,9 +154,19 @@ def like_post(post_id):
         db.session.add(like)
         db.session.commit()
         send_email(
+            # Email address of the post author
             post.author.email,
-            'Notification: Your Post Received a Like!', 'email/liked',
+
+            # Subject of the email
+            'Notification: Your Post Received a Like!',
+
+            # Template for the email content
+            'email/liked',
+
+            # The post that received a like
             post=post,
+
+            # The user who performed the like action
             c_user=current_user
         )
     res = {
@@ -193,10 +203,22 @@ def add_comment(post_id):
     db.session.commit()
 
     send_email(
+        # Recipient's email address
         post.author.email,
-        'Notification: New Comment on Your Post', 'email/commented',
+
+        # Email subject
+        'Notification: New Comment on Your Post',
+
+        # Email template to use
+        'email/commented',
+
+        # Post object
         post=post,
+
+        # Comment object
         comment=comment,
+
+        # The user who commented
         c_user=current_user
     )
 
@@ -218,9 +240,19 @@ def follow(username):
     db.session.commit()
 
     send_email(
+        # Recipient's email address
         user.email,
-        'Notification: New Follow', 'email/follow',
+
+        # Subject of the email
+        'Notification: New Follow',
+
+        # Template for the email content
+        'email/follow',
+
+        # user being followed
         followed=user,
+
+        # current user
         c_user=current_user
     )
 
