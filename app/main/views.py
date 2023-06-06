@@ -217,6 +217,13 @@ def follow(username):
     # Commit the changes made to the database.
     db.session.commit()
 
+    send_email(
+        user.email,
+        'Notification: New Follow', 'email/follow',
+        followed=user,
+        c_user=current_user
+    )
+
     # Return a JSON response indicating that the follow action was successful.
     return jsonify({"msg": "following"})
 
