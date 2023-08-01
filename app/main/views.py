@@ -144,7 +144,7 @@ def like_post(post_id):
 
     if not post:
         return jsonify({"error": "Post does not exist."}, 400)
-    elif like:
+    if like:
         # If the user has already liked the post, remove the like
         db.session.delete(like)
         db.session.commit()
