@@ -15,7 +15,6 @@ def before_request():
     This function is registered as a `before_app_request` handler,
     meaning it will be executed before each incoming request.
     """
-
     # Check if the current user is authenticated (logged in).
     if current_user.is_authenticated:
 
