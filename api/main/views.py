@@ -10,7 +10,7 @@ from . import main
 from flask_login import login_required, current_user
 from .forms import PostForm, EditProfileForm
 from ..models import Post, User, Like, Comment
-from .. import db
+from ..structure import db
 from ..email import send_email
 
 

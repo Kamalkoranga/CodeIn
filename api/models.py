@@ -1,7 +1,7 @@
-from . import db
+from api.structure import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from . import login_manager
+from api.structure import login_manager
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from datetime import datetime

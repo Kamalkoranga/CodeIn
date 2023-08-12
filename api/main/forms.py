@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, TextAreaField, FileField, StringField
 from wtforms.validators import DataRequired, Length, Regexp
-from ..models import User
+from api.models import User
 from wtforms import ValidationError
 from flask_login import current_user
 from flask_pagedown.fields import PageDownField
