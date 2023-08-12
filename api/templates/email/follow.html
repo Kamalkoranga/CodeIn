@@ -1,9 +1,0 @@
-<h3>Dear {{ followed.name }},</h3>
-
-<p>
-    We're thrilled to inform you that <strong>{{ c_user.name }}</strong> has started following you on our platform. Stay connected with {{ c_user.name }}'s updates and enjoy a more engaging experience. Explore their profile and discover shared interests <a href="{{ url_for('main.user', username=c_user.username, _external=True) }}">here</a>.
-</p>
-
-<p>Best regards,</p>
-<p>The CodeIn Team</p>
-<p><small>Note: replies to this email address are not monitored.</small></p>
