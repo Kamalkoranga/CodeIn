@@ -31,6 +31,7 @@
     .new-post {
         cursor: pointer;
         font-weight: 800;
+        text-align: left;
     }
 
     .new-post:hover {
@@ -303,13 +304,14 @@
                     <img class="profile col-2" 
                         src="{{ current_user.gravatar(size=256) }}"
                         alt="">
-                    <form class="col-10">
-                        <input type="text"
-                            class="form-control bg-light rounded-pill p-3 new-post text-secondary  border border-secondary"
-                            value="Start a post" disabled readonly
+                    <div class="w-100">
+                        <button
+                            class="bg-light rounded-pill p-3 new-post text-secondary  border border-secondary w-100"
                             data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                    </form>
+                            type="button"
+                            data-bs-target="#exampleModal">Start a post
+                        </button>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-around start-icon flex-wrap">
                     <p class="text-secondary mb-2">
@@ -427,7 +429,7 @@
                     {% for comment in post.comments|reverse %} {# reverse the comments list #}
                     <div class="comment d-flex gap-2 align-items-start mx-3 mb-3">
                         <img src="{{comment.author.gravatar(size=256)}}" alt="" class="profile">
-                        <div class="card comment__card">
+                        <div class="card comment__card w-100">
                             <div class="card-body">
                                 <a
                                     class="body-top d-flex justify-content-start align-items-center gap-2 position-relative mb-2 link-underline link-underline-opacity-0"
@@ -673,7 +675,7 @@
         `
 
         comment_div.className = "comment d-flex gap-2 align-items-start mx-3 mb-3";
-        comment_div2.className = "card comment__card";
+        comment_div2.className = "card comment__card w-100";
 
         comment_div2.innerHTML = card_body;
         comment_div.innerHTML = comment_img;
