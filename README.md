@@ -1,6 +1,6 @@
-# Codeln - LinkedIn Clone
+# CodeIn - LinkedIn Clone
 
-[Codeln](https://codein.up.railway.app) is a clone of the popular professional networking platform LinkedIn. It aims to replicate some of the core features and functionalities of LinkedIn, providing users with a familiar experience while serving as a learning resource for developers. This project is built using HTML, CSS, Bootstrap, and JavaScript for the frontend, Python with Flask framework for the backend, and PostgreSQL as the database.
+CodeIn is a clone of the popular professional networking platform LinkedIn. It aims to replicate some of the core features and functionalities of LinkedIn, providing users with a familiar experience while serving as a learning resource for developers. This project is built using HTML, CSS, Bootstrap, and JavaScript for the frontend, Python with Flask framework for the backend, and PostgreSQL as the database.
 
 ## Features(current)
 
