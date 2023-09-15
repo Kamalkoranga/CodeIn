@@ -1,5 +1,5 @@
 FROM python:3.11-alpine
-WORKDIR /usr/src/codehub
+WORKDIR /usr/src/codein
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 RUN python3 -m venv env
 COPY . .
