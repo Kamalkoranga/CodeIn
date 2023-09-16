@@ -17,7 +17,10 @@ class PostForm(FlaskForm):
         In this case, it adds a placeholder attribute to the field with the
         specified text.
     '''
-    body = PageDownField(validators=[DataRequired()], render_kw={"placeholder": "What do you want to talk about?"})
+    body = PageDownField(
+        validators=[DataRequired()],
+        render_kw={"placeholder": "What do you want to talk about?"}
+    )
 
     # Create a FileField named 'post' for uploading a photo
     # This field allows the user to select a file from their device

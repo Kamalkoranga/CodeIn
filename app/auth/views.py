@@ -1,12 +1,12 @@
 from . import auth
 from flask import render_template
+from flask import request, url_for, redirect, flash
 from .forms import LoginForm, RegistrationForm
 from ..models import User
-from flask_login import login_user, login_required, current_user, logout_user
-from flask import request, url_for, redirect, flash
 from .. import db
-import random
 from ..email import send_email
+from flask_login import login_user, login_required, current_user, logout_user
+import random
 
 
 @auth.before_app_request

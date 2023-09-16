@@ -31,7 +31,7 @@ def users(count=100):
 def posts(count=100):
     fake = Faker()
     user_count = User.query.count()
-    for i in range(count):
+    for _ in range(count):
         u = User.query.offset(randint(0, user_count - 1)).first()
         p = Post(body=fake.text(), timestamp=fake.past_date(), author=u)
         db.session.add(p)

@@ -83,15 +83,15 @@ def get_image(id):
 
 @main.route("/user/<username>")
 def user(username):
-    # Retrieve the user from the database based on the provided username
-    user = User.query.filter_by(username=username).first_or_404()
+    # Retrieve the profile of user from the database based on the provided username
+    user_profile = User.query.filter_by(username=username).first_or_404()
 
     # Retrieve 6 users from the database except current user
     users = User.query.filter(User.id != current_user.id).limit(6).all()
 
     # Render the 'user.html' template and pass the user object to the template
     return render_template(
-        "user.html", user=user, users=users, nav_color="rgba(0,0,0,0.6)"
+        "user.html", user=user_profile, users=users, nav_color="rgba(0,0,0,0.6)"
     )
 
 
@@ -230,18 +230,18 @@ def add_comment(post_id):
 @login_required
 def follow(username):
     # Retrieve the user object from the database based on the provided username
-    user = User.query.filter_by(username=username).first()
+    user_to_follow = User.query.filter_by(username=username).first()
 
     # Follow the specified user by calling the 'follow' method of the current
     # user object.
-    current_user.follow(user)
+    current_user.follow(user_to_follow)
 
     # Commit the changes made to the database.
     db.session.commit()
 
     send_email(
         # Recipient's email address
-        user.email,
+        user_to_follow.email,
 
         # Subject of the email
         'Notification: New Follow',
@@ -250,7 +250,7 @@ def follow(username):
         'email/follow',
 
         # user being followed
-        followed=user,
+        followed=user_to_follow,
 
         # current user
         c_user=current_user
@@ -264,11 +264,11 @@ def follow(username):
 @login_required
 def unfollow(username):
     # Retrieve the user object from the database based on the provided username
-    user = User.query.filter_by(username=username).first()
+    user_to_unfollow = User.query.filter_by(username=username).first()
 
     # Unfollow the specified user by calling the 'unollow' method of the
     # current user object.
-    current_user.unfollow(user)
+    current_user.unfollow(user_to_unfollow)
 
     # Commit the changes made to the database.
     db.session.commit()

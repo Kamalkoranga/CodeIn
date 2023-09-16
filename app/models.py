@@ -91,7 +91,7 @@ class User(db.Model, UserMixin):
             data = s.loads(
                 token.encode('utf-8'), max_age=expiration
             )
-        except Exception:
+        except BaseException:
             return False
         if data.get('confirm') != self.id:
             return False
@@ -100,7 +100,7 @@ class User(db.Model, UserMixin):
         return True
 
     def gravatar_hash(self):
-        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+        return hashlib.md5(self.email.lower().encode('utf-8'), usedforsecurity=False).hexdigest()
 
     def gravatar(self, size=100, default='identicon', rating='g'):
         url = 'https://secure.gravatar.com/avatar'
