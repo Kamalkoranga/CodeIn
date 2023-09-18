@@ -8,12 +8,12 @@ app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
 
-#? For development
-# if not os.path.isfile('./data-dev.sqlite'):
-#     print('DB not present')
-#     with app.app_context():
-#         db.create_all()
-#     print('DB created')
+# ? For development
+if not os.path.isfile('./data-dev.sqlite'):
+    print('DB not present')
+    with app.app_context():
+        db.create_all()
+    print('DB created')
 
 
 @app.shell_context_processor
