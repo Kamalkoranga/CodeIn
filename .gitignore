@@ -3,4 +3,4 @@ env/
 __pycache__/
 data-dev.sqlite
 .vscode/
-brevo-mail.py
+data.sqlite
