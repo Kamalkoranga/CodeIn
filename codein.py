@@ -18,7 +18,16 @@ if not os.path.isfile('./data.sqlite'):
 
 @app.shell_context_processor
 def make_shell_context():
+    """The function `make_shell_context` returns a dictionary containing the
+    database object `db`, the User class, and the Post class, which can be
+    accessed in the Python shell.
+
+    :return: The make_shell_context function is returning a dictionary with
+    three key-value pairs. The keys are "db", "User", and "Post", and the
+    values are the corresponding objects or classes associated with those keys.
+    """
     return dict(db=db, User=User, Post=Post)
+
 
 if __name__ == '__main__':
     app.run()

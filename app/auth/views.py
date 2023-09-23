@@ -34,11 +34,20 @@ def before_request():
             # within the 'auth' blueprint, which typically displays
             # a message indicating that the user's account is unconfirmed.
             return redirect(url_for('auth.unconfirmed'))
+    return
 
 
 @auth.route('/unconfirmed')
 def unconfirmed():
+    """
+    The `unconfirmed` function checks if the user is anonymous or already
+    confirmed, and redirects to the main index page if so, otherwise it
+    renders the 'unconfirmed.html' template.
 
+    :return: If the user is anonymous or already confirmed, the function will
+    redirect to the main index page. If the user is not anonymous and not
+    confirmed, the function will render the 'unconfirmed.html' template.
+    """
     # Check if the user is anonymous or already confirmed
     if current_user.is_anonymous or current_user.confirmed:
 
@@ -52,6 +61,16 @@ def unconfirmed():
 
 @auth.route('/', methods=['GET', 'POST'])
 def login():
+    """
+    This function handles the login process, including form validation, user
+    authentication, and redirection.
+
+    :return: the rendered login template if the user is not already
+    authenticated or if the form has not been submitted or does not pass
+    validation. If the form has been submitted and passes validation, the
+    function will redirect the user to the 'next' URL if provided, or to the
+    main index page if not.
+    """
     # Check if the user is already authenticated (logged in)
     if current_user.is_authenticated:
         # Redirect to the main index page
@@ -86,6 +105,12 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    """
+    The above function logs out the user, displays a flash message indicating
+    successful logout, and redirects the user to the login page.
+
+    :return: a redirect response to the login page.
+    """
     # Logs out the user
     logout_user()
 
@@ -98,6 +123,17 @@ def logout():
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def register():
+    """
+    The `register` function handles the registration process for new users,
+    including generating a unique username, creating a new user object, adding
+    the user to the database, sending a confirmation email, and redirecting
+    the user to the login page.
+
+    :return: a response to the client. If the form is valid and has been
+    submitted, it redirects the user to the login page. If the form is not
+    valid or has not been submitted, it renders the 'auth/signup.html'
+    template with the registration form.
+    """
     # Create an instance of the RegistrationForm
     form = RegistrationForm()
 
@@ -120,8 +156,13 @@ def register():
         token = user.generate_confirmation_token()
 
         # Send a confirmation email to the user's email address
-        send_email(user.email, 'Confirm Your Account',
-                   'auth/email/confirm', user=user, token=token)
+        send_email(
+            user.email,
+            'Confirm Your Account',
+            'auth/email/confirm',
+            user=user,
+            token=token
+        )
 
         # Flash a message to indicate that a confirmation email has been sent
         flash('A confirmation email has been sent to you by email.')
@@ -136,6 +177,18 @@ def register():
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
+    """
+    This function is used to confirm a user's account by checking if they are
+    already confirmed and then attempting to confirm their account using a
+    provided token.
+
+    :param token: The `token` parameter is a unique identifier that is
+    generated and sent to the user's email address when they register for an
+    account. It is used to confirm the user's account and verify their email
+    address
+
+    :return: a redirect to the main index page.
+    """
     # Check if the user is already confirmed
     if current_user.confirmed:
 
@@ -158,12 +211,20 @@ def confirm(token):
 @auth.route('/confirm')
 @login_required
 def resend_confirmation():
+    """
+    This function resends a confirmation email to the current user and
+    redirects them to the index page.
+
+    :return: a redirect response to the index page of the main blueprint.
+    """
     # Generate a new confirmation token for the current user
     token = current_user.generate_confirmation_token()
 
     # Send a confirmation email to the user's email address
-    send_email(current_user.email, 'Confirm Your Account',
-               'auth/email/confirm', user=current_user, token=token)
+    send_email(
+        current_user.email, 'Confirm Your Account',
+        'auth/email/confirm', user=current_user, token=token
+    )
 
     # Display a flash message to the user
     flash('A new confirmation email has been sent to you by email.')
