@@ -4,16 +4,16 @@ from app import db
 from app.models import User, Post
 from flask_migrate import Migrate
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'production')
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
 
 # ? For database creation
-if not os.path.isfile('./data.sqlite'):
-    print('DB not present')
-    with app.app_context():
-        db.create_all()
-    print('DB created')
+# if not os.path.isfile('./data.sqlite'):
+#     print('DB not present')
+#     with app.app_context():
+#         db.create_all()
+#     print('DB created')
 
 
 @app.shell_context_processor

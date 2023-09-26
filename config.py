@@ -66,8 +66,7 @@ class ProductionConfig(Config):
     Args:
         Config (_type_): inherits from the Config class
     """
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(base_dir, 'data.sqlite')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 config = {
