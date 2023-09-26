@@ -1,11 +1,15 @@
 alembic==1.12.0
 bleach==6.0.0
 blinker==1.6.2
+certifi==2023.7.22
+cffi==1.15.1
 click==8.1.7
+cryptography==41.0.3
 dnspython==2.4.2
 dominate==2.8.0
 email-validator==2.0.0.post2
 Faker==19.6.0
+flake8==6.1.0
 Flask==2.3.3
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.6.2
@@ -23,12 +27,19 @@ Jinja2==3.1.2
 Mako==1.2.4
 Markdown==3.4.4
 MarkupSafe==2.1.3
+mccabe==0.7.0
 packaging==23.1
+psycopg2-binary==2.9.7
+pycodestyle==2.11.0
+pycparser==2.21
+pyflakes==3.1.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
+sib-api-v3-sdk @ git+https://github.com/sendinblue/APIv3-python-library.git@9a5807c149db7855eca346b1d7829a96481f495c
 six==1.16.0
 SQLAlchemy==2.0.20
 typing_extensions==4.7.1
+urllib3==2.0.5
 visitor==0.1.3
 webencodings==0.5.1
 Werkzeug==2.3.7
