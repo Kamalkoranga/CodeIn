@@ -35,7 +35,6 @@ pycparser==2.21
 pyflakes==3.1.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
-sib-api-v3-sdk @ git+https://github.com/sendinblue/APIv3-python-library.git@9a5807c149db7855eca346b1d7829a96481f495c
 six==1.16.0
 SQLAlchemy==2.0.20
 typing_extensions==4.7.1
