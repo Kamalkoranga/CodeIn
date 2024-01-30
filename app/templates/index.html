@@ -355,10 +355,10 @@
                         <span class="text-secondary fs-6">
                             <strong>{{ post.author.name }}</strong> • 3rd+
                         </span>
-                        {% if post.author.about_me %}
-                        <p class="text-secondary m-0">{{
-                            post.author.about_me[:70] }}{% if
-                            post.author.about_me|length > 70 %}...{% endif %}
+                        {% if post.author.headline %}
+                        <p class="text-secondary m-0">
+                            {{ post.author.headline[:70] }}
+                            {% if post.author.headline|length > 70 %}...{% endif %}
                         </p>
                         {% endif %}
                         <p class="text-secondary m-0">{{

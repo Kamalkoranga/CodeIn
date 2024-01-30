@@ -12,7 +12,7 @@ dnspython==2.5.0
 dominate==2.9.1
 email-validator==2.1.0.post1
 fabric==3.2.2
-fake==0.8
+Faker==22.6.0
 Flask==3.0.1
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.6.3
@@ -35,6 +35,7 @@ paramiko==3.4.0
 psycopg2-binary==2.9.9
 pycparser==2.21
 PyNaCl==1.5.0
+python-dateutil==2.8.2
 python-dotenv==1.0.1
 six==1.16.0
 SQLAlchemy==2.0.25
