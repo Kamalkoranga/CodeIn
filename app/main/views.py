@@ -153,22 +153,22 @@ def like_post(post_id):
         like = Like(author_id=current_user.id, post_id=post_id)
         db.session.add(like)
         db.session.commit()
-        send_email(
-            # Email address of the post author
-            post.author.email,
+        # send_email(
+        #     # Email address of the post author
+        #     post.author.email,
 
-            # Subject of the email
-            'Notification: Your Post Received a Like!',
+        #     # Subject of the email
+        #     'Notification: Your Post Received a Like!',
 
-            # Template for the email content
-            'email/liked',
+        #     # Template for the email content
+        #     'email/liked',
 
-            # The post that received a like
-            post=post,
+        #     # The post that received a like
+        #     post=post,
 
-            # The user who performed the like action
-            c_user=current_user
-        )
+        #     # The user who performed the like action
+        #     c_user=current_user
+        # )
     res = {
         # Total number of likes for the post
         "likes": len(post.likes),

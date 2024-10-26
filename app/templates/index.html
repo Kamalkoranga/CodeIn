@@ -392,13 +392,13 @@
                     Here we checked if the current user has liked the post or not 
                 -->
                 {% if current_user.id in post.likes|map(attribute="author_id")|list %}
-                <span class="text-primary px-1" id="like-span-{{post.id}}"  onclick="like({{post.id}});open_comments({{post.id}})">
+                <span class="text-primary px-1" id="like-span-{{post.id}}" onclick="like({{post.id}});open_comments({{post.id}})">
                     <i class="fas fa-thumbs-up fa-flip-horizontal fa-xl" id="like-button-{{post.id}}">
                     </i><span class="p-0 icon-label px-2">Like</span>
                 </span>
                 {% else %}
                 <span class="text-secondary px-1" id="like-span-{{post.id}}" onclick="like({{ post.id }});open_comments({{post.id}})">
-                    <i class="far fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i><span class="p-0 icon-label px-2">Like</span>
+                    <i class="fas fa-thumbs-up fa-xl fa-flip-horizontal" id="like-button-{{post.id}}"></i><span class="p-0 icon-label px-2">Like</span>
                 </span>
                 {% endif %}
 
@@ -587,20 +587,31 @@
         const likeButton = document.getElementById(`like-button-${postId}`);
         const likeSpan = document.getElementById(`like-span-${postId}`);
 
+        if (likeSpan.classList.contains('text-primary')) {
+            likeCount.innerHTML = Number(likeCount.innerHTML) - 1;
+            likeSpan.classList = "text-secondary px-1";
+            likeButton.className = "fas fa-thumbs-up fa-xl fa-flip-horizontal";
+        } else {
+            likeCount.innerHTML = Number(likeCount.innerHTML) + 1;
+            likeSpan.classList = "text-primary px-1";
+            likeButton.className = "fas fa-thumbs-up fa-xl fa-flip-horizontal";
+
+        }
+
         // Send a POST request to the server to like the post
         fetch(`/like_post/${postId}`, { method: "POST" })
-            .then((res) => res.json()) // Parse the response as JSON
-            .then((data) => {
-                // Updating the like count and visual styles class based on the response data
-                likeCount.innerHTML = data["likes"];
-                if (data["liked"] === true) {
-                    likeButton.className = "fas fa-thumbs-up fa-xl fa-flip-horizontal text-primary";
-                    likeSpan.className = "text-primary"
-                } else {
-                    likeButton.className = "far fa-thumbs-up fa-xl fa-flip-horizontal text-secondary";
-                    likeSpan.className = "text-secondary"
-                }
-            })
+            // .then((res) => res.json()) // Parse the response as JSON
+            // .then((data) => {
+            //     // Updating the like count and visual styles class based on the response data
+            //     likeCount.innerHTML = data["likes"];
+            //     if (data["liked"] === true) {
+            //         // likeButton.className = "fas fa-thumbs-up fa-xl fa-flip-horizontal text-primary";
+            //         // likeSpan.className = "text-primary"
+            //     } else {
+            //         // likeButton.className = "far fa-thumbs-up fa-xl fa-flip-horizontal text-secondary";
+            //         // likeSpan.className = "text-secondary"
+            //     }
+            // })
             // Display an error message if the request fails
             .catch((e) => alert("Could not like post."));
     }
@@ -681,7 +692,8 @@
         comment_div.innerHTML = comment_img;
         comment_div.appendChild(comment_div2);
         all_comment.prepend(comment_div);
-
+        document.querySelector(`.comments-${post_id}`).innerHTML++;
+        document.querySelector(`#comment-textarea-${post_id}`).value = "";
         add_comment_to_db(comment, post_id)
     }
 
@@ -700,9 +712,6 @@
             });
             if (response.ok) {
                 const responseData = await response.json();
-                document.querySelector(`#comment-textarea-${post_id}`).value = "";
-                document.querySelector(`.comments-${post_id}`).innerHTML++;
-                console.log(responseData);
             } else {
                 throw new Error('Request failed.');
             }
