@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block title %}LinkedIn: Log In or Sign Up{% endblock title %}
+{% block title %}CodeIn: Log In or Sign Up{% endblock title %}
 
 {% block style %}
 <style>
@@ -81,7 +81,7 @@
     <div class="col-5 login-left px-5">
         <h1 class="mb-5">Welcome to your professional community</h1>
         {{ wtf.quick_form(form) }}
-        <a href="{{url_for('auth.register')}}" class="btn btn-outline-dark fw-bold">New to LinkedIn? Join now</a>
+        <a href="{{url_for('auth.register')}}" class="btn btn-outline-dark fw-bold">New to CodeIn? Join now</a>
     </div>
 
     <div class="col-7 login-right px-5 d-flex justify-content-center align-items-center">
